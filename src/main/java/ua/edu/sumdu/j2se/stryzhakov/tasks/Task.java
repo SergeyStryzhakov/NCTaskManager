@@ -19,6 +19,7 @@ public class Task {
         this.start = start;
         this.end = end;
         this.interval = interval;
+        this.repeated = true;
     }
 
     public String getTitle() {
@@ -29,13 +30,16 @@ public class Task {
         this.title = title;
     }
 
+    /**
+     * @return
+     */
     public int getTime() {
         return repeated ? start : time;
     }
 
     public void setTime(int time) {
         this.time = time;
-        if(repeated) repeated = false;
+        this.repeated = false;
     }
 
     public boolean isActive() {
@@ -46,20 +50,34 @@ public class Task {
         this.active = active;
     }
 
-    public int getStartTime () {
+    /**
+     * @return
+     */
+    public int getStartTime() {
         return repeated ? start : time;
     }
 
+    /**
+     * @return
+     */
     public int getEndTime() {
         return repeated ? end : time;
     }
 
+    /**
+     * @return
+     */
     public int getRepeatInterval() {
         return repeated ? interval : 0;
     }
 
-    private void setTime(int start, int end, int interval) {
-        if(!repeated) repeated = true;
+    /**
+     * @param start
+     * @param end
+     * @param interval
+     */
+    public void setTime(int start, int end, int interval) {
+        this.repeated = true;
         this.start = start;
         this.end = end;
         this.interval = interval;
@@ -69,5 +87,24 @@ public class Task {
         return repeated;
     }
 
+    public int nextTimeAfter(int current) {
 
+        //if task is not active
+        if (!active) return -1;
+        //if task is active and not repeated
+        if (!repeated) {
+            if (current < time) return time;
+            return -1;
+        }
+        //if task is active and repeated
+        if (current < start) return start;
+        if (current > end) return -1;
+        for (int i = start; i <= end; i += interval) {
+            if (i > current) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
+
