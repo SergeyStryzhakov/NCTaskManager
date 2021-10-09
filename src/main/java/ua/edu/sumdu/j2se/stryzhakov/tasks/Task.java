@@ -9,11 +9,25 @@ public class Task {
     private boolean active;
     private boolean repeated;
 
+    /**
+     * Create a non-repeated task
+     *
+     * @param title Title of the task
+     * @param time  Time to run the task
+     */
     public Task(String title, int time) {
         this.title = title;
         this.time = time;
     }
 
+    /**
+     * Create a repeated task with specific parameters
+     *
+     * @param title    Title of the task
+     * @param start    Start time of new task
+     * @param end      The end of task
+     * @param interval How often the task is been repeated.
+     */
     public Task(String title, int start, int end, int interval) {
         this.title = title;
         this.start = start;
@@ -31,7 +45,8 @@ public class Task {
     }
 
     /**
-     * @return
+     * @return If the task is repeated then return time of the first run
+     * else - time of start
      */
     public int getTime() {
         return repeated ? start : time;
@@ -51,30 +66,31 @@ public class Task {
     }
 
     /**
-     * @return
+     * @return If the task is repeated then return time of the first run
+     * * else - time of start
      */
     public int getStartTime() {
         return repeated ? start : time;
     }
 
     /**
-     * @return
+     * @return If the task is repeated then return time of the last run
+     * * else - time of start
      */
     public int getEndTime() {
         return repeated ? end : time;
     }
 
     /**
-     * @return
+     * @return If the task is repeated then return interval
+     * * else - return 0
      */
     public int getRepeatInterval() {
         return repeated ? interval : 0;
     }
 
     /**
-     * @param start
-     * @param end
-     * @param interval
+     * Create repeated task from non-repeated
      */
     public void setTime(int start, int end, int interval) {
         this.repeated = true;
@@ -87,6 +103,14 @@ public class Task {
         return repeated;
     }
 
+    /**
+     * Check the task and return time when next task will be started
+     * or -1 if task is not active.
+     *
+     * @param current Current time
+     * @return Time when next task will be started
+     * or -1 if task is not active.
+     */
     public int nextTimeAfter(int current) {
 
         //if task is not active
