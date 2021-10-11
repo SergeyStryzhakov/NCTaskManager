@@ -67,7 +67,7 @@ public class Task {
 
     /**
      * @return If the task is repeated then return time of the first run
-     * * else - time of start
+     * else - time of start
      */
     public int getStartTime() {
         return repeated ? start : time;
@@ -75,7 +75,7 @@ public class Task {
 
     /**
      * @return If the task is repeated then return time of the last run
-     * * else - time of start
+     * else - time of start
      */
     public int getEndTime() {
         return repeated ? end : time;
@@ -83,7 +83,7 @@ public class Task {
 
     /**
      * @return If the task is repeated then return interval
-     * * else - return 0
+     * else - return 0
      */
     public int getRepeatInterval() {
         return repeated ? interval : 0;
