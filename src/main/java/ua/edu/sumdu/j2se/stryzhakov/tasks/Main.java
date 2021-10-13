@@ -21,6 +21,7 @@ public class Main {
         System.out.println(list.size());
         list.remove(test5);
         list.remove(test6);
+        System.out.println(list.size());
         list.remove(list.getTask(0));
         list.incoming(80, 100);
     }
