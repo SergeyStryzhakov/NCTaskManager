@@ -3,7 +3,8 @@ package ua.edu.sumdu.j2se.stryzhakov.tasks;
 import java.util.Arrays;
 
 public class ArrayTaskList {
-    private Task[] tasks = new Task[0];
+    private Task[] tasks = new Task[10];
+    private int index = 0;
 
     /**
      * Add new task in the array
@@ -11,8 +12,11 @@ public class ArrayTaskList {
      * @param task for add
      */
     public void add(Task task) {
-        tasks = Arrays.copyOf(tasks, tasks.length + 1);
-        tasks[tasks.length - 1] = task;
+        if (index == tasks.length) {
+            tasks = Arrays.copyOf(tasks, tasks.length * 2);
+        }
+        tasks[index] = task;
+        index++;
     }
 
     /**
@@ -32,6 +36,7 @@ public class ArrayTaskList {
                 System.arraycopy(tasks, 0, temp, 0, i);
                 System.arraycopy(tasks, i + 1, temp, i, tasks.length - i - 1);
                 tasks = temp;
+                index--;
                 return true;
             }
         }
@@ -42,7 +47,11 @@ public class ArrayTaskList {
      * Return size of the array
      */
     public int size() {
-        return tasks.length;
+        int count = 0;
+        for (Task task : tasks) {
+            if (task != null) count++;
+        }
+        return count;
     }
 
     /**
