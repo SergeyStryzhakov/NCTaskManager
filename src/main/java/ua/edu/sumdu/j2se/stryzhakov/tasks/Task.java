@@ -1,6 +1,6 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
-public class Task {
+public class Task  {
     private String title;
     private int time;
     private int start;
@@ -14,10 +14,16 @@ public class Task {
      *
      * @param title Title of the task
      * @param time  Time to run the task
+     * @throws IllegalArgumentException if title equals null or time < 0
      */
-    public Task(String title, int time) {
+    public Task(String title, int time) throws IllegalArgumentException {
+        if (title == null || time < 0) {
+            throw new IllegalArgumentException("The title cannot be null and the time cannot be a negative");
+        }
         this.title = title;
         this.time = time;
+
+
     }
 
     /**
@@ -27,8 +33,12 @@ public class Task {
      * @param start    Start time of new task
      * @param end      The end of task
      * @param interval How often the task is been repeated.
+     * @throws IllegalArgumentException if title equals null or interval < 0
      */
-    public Task(String title, int start, int end, int interval) {
+    public Task(String title, int start, int end, int interval) throws IllegalArgumentException {
+        if (title == null || interval < 0) {
+            throw new IllegalArgumentException("The title cannot be null and the interval cannot be a negative");
+        }
         this.title = title;
         this.start = start;
         this.end = end;
@@ -40,7 +50,10 @@ public class Task {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title) throws IllegalArgumentException {
+        if (title == null) {
+            throw new IllegalArgumentException("The title cannot be null");
+        }
         this.title = title;
     }
 
@@ -52,7 +65,10 @@ public class Task {
         return repeated ? start : time;
     }
 
-    public void setTime(int time) {
+    public void setTime(int time) throws IllegalArgumentException {
+        if (time < 0) {
+            throw new IllegalArgumentException("The time cannot be a negative");
+        }
         this.time = time;
         this.repeated = false;
     }
@@ -92,7 +108,10 @@ public class Task {
     /**
      * Create repeated task from non-repeated
      */
-    public void setTime(int start, int end, int interval) {
+    public void setTime(int start, int end, int interval) throws IllegalArgumentException {
+        if (interval < 0) {
+            throw new IllegalArgumentException("The interval cannot be a negative");
+        }
         this.repeated = true;
         this.start = start;
         this.end = end;
@@ -110,9 +129,12 @@ public class Task {
      * @param current Current time
      * @return Time when next task will be started
      * or -1 if task is not active.
+     * @throws IllegalArgumentException if current < 0
      */
-    public int nextTimeAfter(int current) {
-
+    public int nextTimeAfter(int current) throws IllegalArgumentException {
+        if (current < 0) {
+            throw new IllegalArgumentException("Current time cannot be a negative");
+        }
         //if task is not active
         if (!active) return -1;
         //if task is active and not repeated

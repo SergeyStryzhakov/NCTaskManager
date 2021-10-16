@@ -2,7 +2,8 @@ package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
 import java.util.Arrays;
 
-public class ArrayTaskList {
+public class LinkedTaskList {
+
     private Task[] tasks = new Task[10];
     private int index = 0;
 
@@ -66,10 +67,9 @@ public class ArrayTaskList {
      * Get the task with specific index
      *
      * @param index of the task
-     * @return The task with specific index
+     * @return The task with specific index,
      * @throws IndexOutOfBoundsException if index out of bounds
      */
-
     public Task getTask(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index > tasks.length) {
             throw new IndexOutOfBoundsException("Index is out of Bounds");
@@ -84,8 +84,8 @@ public class ArrayTaskList {
      * @param to   End of time interval
      * @return List of the active tasks with specific condition
      */
-    public ArrayTaskList incoming(int from, int to) {
-        ArrayTaskList taskList = new ArrayTaskList();
+    public LinkedTaskList incoming(int from, int to) {
+        LinkedTaskList taskList = new LinkedTaskList();
 
         for (Task task : tasks) {
             if (task == null || !task.isActive()) continue;
