@@ -71,8 +71,8 @@ public class ArrayTaskList {
      */
 
     public Task getTask(int index) throws IndexOutOfBoundsException {
-        if (index < 0 || index > tasks.length) {
-            throw new IndexOutOfBoundsException("Index is out of Bounds");
+        if (index < 0 || index >= tasks.length) {
+            throw new IndexOutOfBoundsException("Index is out of bounds");
         }
         return tasks[index];
     }
@@ -84,7 +84,10 @@ public class ArrayTaskList {
      * @param to   End of time interval
      * @return List of the active tasks with specific condition
      */
-    public ArrayTaskList incoming(int from, int to) {
+    public ArrayTaskList incoming(int from, int to) throws IllegalArgumentException {
+        if (from < 0 || to < 0) {
+            throw new IllegalArgumentException("Time cannot be negative");
+        }
         ArrayTaskList taskList = new ArrayTaskList();
 
         for (Task task : tasks) {

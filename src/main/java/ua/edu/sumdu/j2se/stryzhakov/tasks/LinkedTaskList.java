@@ -28,7 +28,7 @@ public class LinkedTaskList {
      * Remove specific task and change array size
      *
      * @param task for remove
-     * @return if task is not find return false, else - true
+     * @return if task is not find - return false, else - return true
      * @throws NullPointerException if task equals null
      */
 
@@ -71,8 +71,8 @@ public class LinkedTaskList {
      * @throws IndexOutOfBoundsException if index out of bounds
      */
     public Task getTask(int index) throws IndexOutOfBoundsException {
-        if (index < 0 || index > tasks.length) {
-            throw new IndexOutOfBoundsException("Index is out of Bounds");
+        if (index < 0 || index >= tasks.length) {
+            throw new IndexOutOfBoundsException("Index is out of bounds");
         }
         return tasks[index];
     }
@@ -84,9 +84,11 @@ public class LinkedTaskList {
      * @param to   End of time interval
      * @return List of the active tasks with specific condition
      */
-    public LinkedTaskList incoming(int from, int to) {
+    public LinkedTaskList incoming(int from, int to) throws IllegalArgumentException {
+        if (from < 0 || to < 0) {
+            throw new IllegalArgumentException("Time cannot be negative");
+        }
         LinkedTaskList taskList = new LinkedTaskList();
-
         for (Task task : tasks) {
             if (task == null || !task.isActive()) continue;
             if (!task.isRepeated() &&

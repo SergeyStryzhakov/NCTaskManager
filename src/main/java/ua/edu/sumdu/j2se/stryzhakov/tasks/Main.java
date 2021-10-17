@@ -10,6 +10,7 @@ public class Main {
         list.add(new Task("Test2", 10, 24, 2));
         list.add(new Task("Test3", 18));
         list.add(new Task("Test4", 8, 22, 3));
+        //list.add(null);
         Task test5 = new Task("Test5", 84);
         test5.setActive(true);
         Task test6 = new Task("Test6", 98);

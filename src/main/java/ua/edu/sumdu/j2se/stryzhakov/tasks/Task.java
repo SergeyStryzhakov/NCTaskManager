@@ -1,6 +1,6 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
-public class Task  {
+public class Task {
     private String title;
     private int time;
     private int start;
@@ -109,8 +109,8 @@ public class Task  {
      * Create repeated task from non-repeated
      */
     public void setTime(int start, int end, int interval) throws IllegalArgumentException {
-        if (interval < 0) {
-            throw new IllegalArgumentException("The interval cannot be a negative");
+        if (interval < 0 || start < 0 || end < 0) {
+            throw new IllegalArgumentException("Time cannot be a negative");
         }
         this.repeated = true;
         this.start = start;
