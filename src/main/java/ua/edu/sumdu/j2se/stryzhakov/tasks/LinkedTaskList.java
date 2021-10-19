@@ -1,14 +1,24 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
-import java.util.Arrays;
-
 public class LinkedTaskList {
-
-    private Task[] tasks = new Task[10];
-    private int index = 0;
+    private Element head;
 
     /**
-     * Add new task in the array
+     * Class create the node of the linked list
+     */
+    static class Element {
+        private Task task;
+        private Element next;
+
+        public Element(Task task) {
+            this.task = task;
+            next = null;
+
+        }
+    }
+
+    /**
+     * Add new task in the list
      *
      * @param task for add
      * @throws NullPointerException if task equals null
@@ -17,15 +27,16 @@ public class LinkedTaskList {
         if (task == null) {
             throw new NullPointerException("The task cannot be null");
         }
-        if (index == tasks.length) {
-            tasks = Arrays.copyOf(tasks, tasks.length * 2);
+        Element newElement = new Element(task);
+        if (head != null) {
+            newElement.next = head;
         }
-        tasks[index] = task;
-        index++;
+        head = newElement;
+
     }
 
     /**
-     * Remove specific task and change array size
+     * Remove specific task
      *
      * @param task for remove
      * @return if task is not find - return false, else - return true
@@ -36,29 +47,34 @@ public class LinkedTaskList {
         if (task == null) {
             throw new NullPointerException("The task cannot be null");
         }
-        if (tasks.length == 0) return false;
-        for (int i = 0; i < tasks.length; i++) {
-            if (tasks[i].equals(task)) {
-                tasks[i] = null;
-                //Shift the array after removing element
-                Task[] temp = new Task[tasks.length - 1];
-                System.arraycopy(tasks, 0, temp, 0, i);
-                System.arraycopy(tasks, i + 1, temp, i, tasks.length - i - 1);
-                tasks = temp;
-                index--;
+        Element currentElement = head;
+        Element previousElement = null;
+        while (currentElement != null) {
+            if (currentElement.task == task) {
+                if (currentElement == head) {
+                    head = currentElement.next;
+                    return true;
+                }
+                previousElement.next = currentElement.next;
                 return true;
             }
+            previousElement = currentElement;
+            currentElement = currentElement.next;
         }
         return false;
     }
 
     /**
-     * Return size of the array without null
+     * Return size of the list
      */
     public int size() {
         int count = 0;
-        for (Task task : tasks) {
-            if (task != null) count++;
+        Element currentElement = head;
+        if (currentElement == null) return count;
+        while (currentElement != null) {
+            count++;
+            currentElement = currentElement.next;
+
         }
         return count;
     }
@@ -69,16 +85,31 @@ public class LinkedTaskList {
      * @param index of the task
      * @return The task with specific index,
      * @throws IndexOutOfBoundsException if index out of bounds
+     * @throws IllegalArgumentException  if list is empty
      */
-    public Task getTask(int index) throws IndexOutOfBoundsException {
-        if (index < 0 || index >= tasks.length) {
+    public Task getTask(int index) throws IndexOutOfBoundsException, IllegalArgumentException {
+        if (index < 0 || index >= this.size()) {
             throw new IndexOutOfBoundsException("Index is out of bounds");
         }
-        return tasks[index];
+        if (head == null) {
+            throw new IllegalArgumentException("List is empty.");
+        }
+        Element currentElement = head;
+        int countElement = 0;
+
+        while (currentElement != null) {
+            if (countElement == index) {
+                return currentElement.task;
+            }
+            currentElement = currentElement.next;
+            countElement++;
+        }
+        return null;
     }
 
+
     /**
-     * Create new array of tasks with specific condition
+     * Create new list of tasks with specific condition
      *
      * @param from Start of time interval
      * @param to   End of time interval
@@ -89,18 +120,25 @@ public class LinkedTaskList {
             throw new IllegalArgumentException("Time cannot be negative");
         }
         LinkedTaskList taskList = new LinkedTaskList();
-        for (Task task : tasks) {
-            if (task == null || !task.isActive()) continue;
-            if (!task.isRepeated() &&
-                    task.getTime() > from &&
-                    task.getTime() < to) {
-                taskList.add(task);
+        Element currentElement = head;
+        while (currentElement != null) {
+            if (!currentElement.task.isActive()) {
+                currentElement = currentElement.next;
+                continue;
             }
-            if (task.isRepeated() &&
-                    task.nextTimeAfter(from) != -1 &&
-                    task.nextTimeAfter(from) < to) {
-                taskList.add(task);
+            if (!currentElement.task.isRepeated() &&
+                    currentElement.task.getTime() > from &&
+                    currentElement.task.getTime() < to) {
+                taskList.add(currentElement.task);
             }
+
+            if (currentElement.task.isRepeated() &&
+                    currentElement.task.nextTimeAfter(from) != -1 &&
+                    currentElement.task.nextTimeAfter(from) < to) {
+                taskList.add(currentElement.task);
+            }
+            currentElement = currentElement.next;
+
         }
         return taskList;
     }

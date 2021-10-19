@@ -5,25 +5,29 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String[] args) {
-        ArrayTaskList list = new ArrayTaskList();
+        LinkedTaskList list = new LinkedTaskList();
         list.add(new Task("Test1", 15));
-        list.add(new Task("Test2", 10, 24, 2));
+        list.add(new Task("Test2", 40));
         list.add(new Task("Test3", 18));
-        list.add(new Task("Test4", 8, 22, 3));
-        //list.add(null);
-        Task test5 = new Task("Test5", 84);
-        test5.setActive(true);
-        Task test6 = new Task("Test6", 98);
-        test6.setActive(true);
-        list.add(test5);
+        list.add(new Task("Test4", 10, 24, 5));
+        list.add(new Task("Test5", 19));
+        Task task = new Task("Test new", 55);
+        task.setActive(true);
+        list.add(new Task("Test6", 99));
+        list.add(task);
+        list.add(new Task("Test7", 10, 24, 5));
+        Task task1 = new Task("Test new 1", 10, 24, 5);
+        task1.setActive(true);
+        list.add(task1);
+        list.remove(task);
         System.out.println(list.size());
+        System.out.println(list.getTask(0).getTitle());
+        System.out.println(list.getTask(6).getTitle());
+        list.incoming(16, 50);
 
-        list.add(test6);
-        System.out.println(list.size());
-        list.remove(test5);
-        list.remove(test6);
-        System.out.println(list.size());
-        list.remove(list.getTask(0));
-        list.incoming(80, 100);
+        list.remove(new Task("Test", 15));
+        System.out.println("stop");
+
+
     }
 }
