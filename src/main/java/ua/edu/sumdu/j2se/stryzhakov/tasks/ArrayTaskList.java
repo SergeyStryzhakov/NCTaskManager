@@ -10,8 +10,12 @@ public class ArrayTaskList {
      * Add new task in the array
      *
      * @param task for add
+     * @throws NullPointerException if task equals null
      */
-    public void add(Task task) {
+    public void add(Task task) throws NullPointerException {
+        if (task == null) {
+            throw new NullPointerException("The task cannot be null");
+        }
         if (index == tasks.length) {
             tasks = Arrays.copyOf(tasks, tasks.length * 2);
         }
@@ -24,9 +28,13 @@ public class ArrayTaskList {
      *
      * @param task for remove
      * @return if task is not find return false, else - true
+     * @throws NullPointerException if task equals null
      */
 
-    public boolean remove(Task task) {
+    public boolean remove(Task task) throws NullPointerException {
+        if (task == null) {
+            throw new NullPointerException("The task cannot be null");
+        }
         if (tasks.length == 0) return false;
         for (int i = 0; i < tasks.length; i++) {
             if (tasks[i].equals(task)) {
@@ -44,7 +52,7 @@ public class ArrayTaskList {
     }
 
     /**
-     * Return size of the array
+     * Return size of the array without null
      */
     public int size() {
         int count = 0;
@@ -58,14 +66,15 @@ public class ArrayTaskList {
      * Get the task with specific index
      *
      * @param index of the task
-     * @return The task with specific index,
-     * if task not found - return null
+     * @return The task with specific index
+     * @throws IndexOutOfBoundsException if index out of bounds
      */
-    public Task getTask(int index) {
-        if (index >= 0 && index < tasks.length) {
-            return tasks[index];
+
+    public Task getTask(int index) throws IndexOutOfBoundsException {
+        if (index < 0 || index >= tasks.length) {
+            throw new IndexOutOfBoundsException("Index is out of bounds");
         }
-        return null;
+        return tasks[index];
     }
 
     /**
@@ -75,7 +84,10 @@ public class ArrayTaskList {
      * @param to   End of time interval
      * @return List of the active tasks with specific condition
      */
-    public ArrayTaskList incoming(int from, int to) {
+    public ArrayTaskList incoming(int from, int to) throws IllegalArgumentException {
+        if (from < 0 || to < 0) {
+            throw new IllegalArgumentException("Time cannot be negative");
+        }
         ArrayTaskList taskList = new ArrayTaskList();
 
         for (Task task : tasks) {
