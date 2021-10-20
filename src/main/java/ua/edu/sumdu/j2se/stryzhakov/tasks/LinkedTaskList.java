@@ -120,26 +120,22 @@ public class LinkedTaskList {
             throw new IllegalArgumentException("Time cannot be negative");
         }
         LinkedTaskList taskList = new LinkedTaskList();
-        Element currentElement = head;
-        while (currentElement != null) {
-            if (!currentElement.task.isActive()) {
-                currentElement = currentElement.next;
-                continue;
-            }
-            if (!currentElement.task.isRepeated() &&
-                    currentElement.task.getTime() > from &&
-                    currentElement.task.getTime() < to) {
-                taskList.add(currentElement.task);
-            }
+        Element current = head;
 
-            if (currentElement.task.isRepeated() &&
-                    currentElement.task.nextTimeAfter(from) != -1 &&
-                    currentElement.task.nextTimeAfter(from) < to) {
-                taskList.add(currentElement.task);
+        while (current != null) {
+            if (current.task.isActive()) {
+                if (current.task.isRepeated() &&
+                        current.task.nextTimeAfter(from) != -1 &&
+                        current.task.nextTimeAfter(from) < to) {
+                    taskList.add(current.task);
+                } else if (current.task.getTime() > from &&
+                        current.task.getTime() < to) {
+                    taskList.add(current.task);
+                }
             }
-            currentElement = currentElement.next;
-
+            current = current.next;
         }
         return taskList;
+
     }
 }

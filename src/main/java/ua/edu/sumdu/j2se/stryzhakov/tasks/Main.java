@@ -1,11 +1,10 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
-import java.util.Arrays;
-
 public class Main {
 
     public static void main(String[] args) {
         LinkedTaskList list = new LinkedTaskList();
+        //ArrayTaskList list = new ArrayTaskList();
         list.add(new Task("Test1", 15));
         list.add(new Task("Test2", 40));
         list.add(new Task("Test3", 18));

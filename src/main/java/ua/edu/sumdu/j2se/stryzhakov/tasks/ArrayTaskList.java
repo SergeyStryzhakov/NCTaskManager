@@ -36,7 +36,7 @@ public class ArrayTaskList {
             throw new NullPointerException("The task cannot be null");
         }
         if (tasks.length == 0) return false;
-        for (int i = 0; i < tasks.length; i++) {
+        for (int i = 0; i < tasks.length - 1; i++) {
             if (tasks[i].equals(task)) {
                 tasks[i] = null;
                 //Shift the array after removing element
@@ -89,19 +89,19 @@ public class ArrayTaskList {
             throw new IllegalArgumentException("Time cannot be negative");
         }
         ArrayTaskList taskList = new ArrayTaskList();
-
-        for (Task task : tasks) {
-            if (task == null || !task.isActive()) continue;
-            if (!task.isRepeated() &&
-                    task.getTime() > from &&
-                    task.getTime() < to) {
-                taskList.add(task);
+        int i = 0;
+        while (tasks[i] != null) {
+            if (tasks[i].isActive()) {
+                if (tasks[i].isRepeated() &&
+                        tasks[i].nextTimeAfter(from) != -1 &&
+                        tasks[i].nextTimeAfter(from) < to) {
+                    taskList.add(tasks[i]);
+                } else if (tasks[i].getTime() > from &&
+                        tasks[i].getTime() < to) {
+                    taskList.add(tasks[i]);
+                }
             }
-            if (task.isRepeated() &&
-                    task.nextTimeAfter(from) != -1 &&
-                    task.nextTimeAfter(from) < to) {
-                taskList.add(task);
-            }
+            i++;
         }
         return taskList;
     }
