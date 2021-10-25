@@ -1,13 +1,13 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
-public class LinkedTaskList {
+public class LinkedTaskList extends AbstractTaskList {
     private Element head;
 
     /**
      * Class create the node of the linked list
      */
     static class Element {
-        private Task task;
+        private final Task task;
         private Element next;
 
         public Element(Task task) {
@@ -23,6 +23,7 @@ public class LinkedTaskList {
      * @param task for add
      * @throws NullPointerException if task equals null
      */
+    @Override
     public void add(Task task) throws NullPointerException {
         if (task == null) {
             throw new NullPointerException("The task cannot be null");
@@ -42,7 +43,7 @@ public class LinkedTaskList {
      * @return if task is not find - return false, else - return true
      * @throws NullPointerException if task equals null
      */
-
+    @Override
     public boolean remove(Task task) throws NullPointerException {
         if (task == null) {
             throw new NullPointerException("The task cannot be null");
@@ -67,6 +68,7 @@ public class LinkedTaskList {
     /**
      * Return size of the list
      */
+    @Override
     public int size() {
         int count = 0;
         Element currentElement = head;
@@ -87,6 +89,7 @@ public class LinkedTaskList {
      * @throws IndexOutOfBoundsException if index out of bounds
      * @throws IllegalArgumentException  if list is empty
      */
+    @Override
     public Task getTask(int index) throws IndexOutOfBoundsException, IllegalArgumentException {
         if (index < 0 || index >= this.size()) {
             throw new IndexOutOfBoundsException("Index is out of bounds");
@@ -107,35 +110,4 @@ public class LinkedTaskList {
         return null;
     }
 
-
-    /**
-     * Create new list of tasks with specific condition
-     *
-     * @param from Start of time interval
-     * @param to   End of time interval
-     * @return List of the active tasks with specific condition
-     */
-    public LinkedTaskList incoming(int from, int to) throws IllegalArgumentException {
-        if (from < 0 || to < 0) {
-            throw new IllegalArgumentException("Time cannot be negative");
-        }
-        LinkedTaskList taskList = new LinkedTaskList();
-        Element current = head;
-
-        while (current != null) {
-            if (current.task.isActive()) {
-                if (current.task.isRepeated() &&
-                        current.task.nextTimeAfter(from) != -1 &&
-                        current.task.nextTimeAfter(from) < to) {
-                    taskList.add(current.task);
-                } else if (current.task.getTime() > from &&
-                        current.task.getTime() < to) {
-                    taskList.add(current.task);
-                }
-            }
-            current = current.next;
-        }
-        return taskList;
-
-    }
 }

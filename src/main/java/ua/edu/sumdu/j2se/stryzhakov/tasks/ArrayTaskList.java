@@ -2,7 +2,7 @@ package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
 import java.util.Arrays;
 
-public class ArrayTaskList {
+public class ArrayTaskList extends AbstractTaskList {
     private Task[] tasks = new Task[10];
     private int index = 0;
 
@@ -12,6 +12,7 @@ public class ArrayTaskList {
      * @param task for add
      * @throws NullPointerException if task equals null
      */
+    @Override
     public void add(Task task) throws NullPointerException {
         if (task == null) {
             throw new NullPointerException("The task cannot be null");
@@ -30,7 +31,7 @@ public class ArrayTaskList {
      * @return if task is not find return false, else - true
      * @throws NullPointerException if task equals null
      */
-
+@Override
     public boolean remove(Task task) throws NullPointerException {
         if (task == null) {
             throw new NullPointerException("The task cannot be null");
@@ -54,6 +55,7 @@ public class ArrayTaskList {
     /**
      * Return size of the array without null
      */
+    @Override
     public int size() {
         int count = 0;
         for (Task task : tasks) {
@@ -69,40 +71,11 @@ public class ArrayTaskList {
      * @return The task with specific index
      * @throws IndexOutOfBoundsException if index out of bounds
      */
-
+@Override
     public Task getTask(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= tasks.length) {
             throw new IndexOutOfBoundsException("Index is out of bounds");
         }
         return tasks[index];
-    }
-
-    /**
-     * Create new array of tasks with specific condition
-     *
-     * @param from Start of time interval
-     * @param to   End of time interval
-     * @return List of the active tasks with specific condition
-     */
-    public ArrayTaskList incoming(int from, int to) throws IllegalArgumentException {
-        if (from < 0 || to < 0) {
-            throw new IllegalArgumentException("Time cannot be negative");
-        }
-        ArrayTaskList taskList = new ArrayTaskList();
-        int i = 0;
-        while (tasks[i] != null) {
-            if (tasks[i].isActive()) {
-                if (tasks[i].isRepeated() &&
-                        tasks[i].nextTimeAfter(from) != -1 &&
-                        tasks[i].nextTimeAfter(from) < to) {
-                    taskList.add(tasks[i]);
-                } else if (tasks[i].getTime() > from &&
-                        tasks[i].getTime() < to) {
-                    taskList.add(tasks[i]);
-                }
-            }
-            i++;
-        }
-        return taskList;
     }
 }
