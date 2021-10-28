@@ -22,8 +22,6 @@ public class Task {
         }
         this.title = title;
         this.time = time;
-
-
     }
 
     /**
