@@ -13,7 +13,6 @@ public class LinkedTaskList extends AbstractTaskList {
         public Element(Task task) {
             this.task = task;
             next = null;
-
         }
     }
 
@@ -108,6 +107,15 @@ public class LinkedTaskList extends AbstractTaskList {
             countElement++;
         }
         return null;
+    }
+
+    /**
+     * Return type of list which use in the class
+     * for method "incoming" in abstract class
+     */
+    @Override
+    ListTypes.types getType() {
+        return ListTypes.types.LINKED;
     }
 
 }

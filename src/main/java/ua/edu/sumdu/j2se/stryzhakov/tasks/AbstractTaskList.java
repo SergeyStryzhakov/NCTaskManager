@@ -1,6 +1,7 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
 public abstract class AbstractTaskList {
+
     abstract void add(Task task);
 
     abstract boolean remove(Task task);
@@ -8,6 +9,8 @@ public abstract class AbstractTaskList {
     abstract int size();
 
     abstract Task getTask(int index);
+
+    abstract ListTypes.types getType();
 
     /**
      * Create new list of tasks with specific condition
@@ -21,14 +24,8 @@ public abstract class AbstractTaskList {
         if (from < 0 || to < 0) {
             throw new IllegalArgumentException("Time cannot be negative");
         }
-        //Check incoming object
-        AbstractTaskList taskList;
-        if (this instanceof LinkedTaskList) {
-            taskList = new LinkedTaskList();
-        } else {
-            taskList = new ArrayTaskList();
-        }
 
+        AbstractTaskList taskList = TaskListFactory.createTaskList(this.getType());
         for (int i = 0; i < size(); i++) {
             Task current = getTask(i);
             if (current.nextTimeAfter(from) != -1 &&

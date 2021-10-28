@@ -78,4 +78,13 @@ public class ArrayTaskList extends AbstractTaskList {
         }
         return tasks[index];
     }
+
+    /**
+     * Return type of list which use in the class
+     * for method "incoming" in abstract class
+     */
+    @Override
+    ListTypes.types getType() {
+        return ListTypes.types.ARRAY;
+    }
 }
