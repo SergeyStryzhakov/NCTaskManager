@@ -171,8 +171,8 @@ public class LinkedTaskList extends AbstractTaskList {
         }
 
         @Override
-        public void remove() throws NullPointerException{
-            if (current == null) throw new NullPointerException("Call remove without next!");
+        public void remove() throws IllegalStateException {
+            if (current == null) throw new IllegalStateException("Call remove without next!");
             list.remove(current.task);
             count--;
         }

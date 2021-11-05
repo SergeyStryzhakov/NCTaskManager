@@ -134,8 +134,8 @@ public class ArrayTaskList extends AbstractTaskList {
         }
 
         @Override
-        public void remove() throws NullPointerException {
-            if (temp == null) throw new NullPointerException("Call remove without next!");
+        public void remove() throws IllegalStateException {
+            if (temp == null) throw new IllegalStateException("Call remove without next!");
             arrayTaskList.remove(temp);
             count--;
 
