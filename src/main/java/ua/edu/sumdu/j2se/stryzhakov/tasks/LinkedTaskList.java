@@ -1,5 +1,11 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+
 public class LinkedTaskList extends AbstractTaskList {
     private Element head;
 
@@ -9,10 +15,12 @@ public class LinkedTaskList extends AbstractTaskList {
     static class Element {
         private final Task task;
         private Element next;
+        private Element prev;
 
         public Element(Task task) {
             this.task = task;
             next = null;
+            prev = null;
         }
     }
 
@@ -30,6 +38,7 @@ public class LinkedTaskList extends AbstractTaskList {
         Element newElement = new Element(task);
         if (head != null) {
             newElement.next = head;
+            head.prev = newElement;
         }
         head = newElement;
 
@@ -50,12 +59,14 @@ public class LinkedTaskList extends AbstractTaskList {
         Element currentElement = head;
         Element previousElement = null;
         while (currentElement != null) {
-            if (currentElement.task == task) {
-                if (currentElement == head) {
+            if (currentElement.task.equals(task)) {
+                if (currentElement.equals(head)) {
                     head = currentElement.next;
                     return true;
                 }
+                previousElement.next.prev = currentElement.prev;
                 previousElement.next = currentElement.next;
+
                 return true;
             }
             previousElement = currentElement;
@@ -116,6 +127,54 @@ public class LinkedTaskList extends AbstractTaskList {
     @Override
     ListTypes.types getType() {
         return ListTypes.types.LINKED;
+    }
+
+    @NotNull
+    @Override
+    public Iterator<Task> iterator() {
+        return new LinkedListIterator(this);
+    }
+
+    @Override
+    public void forEach(Consumer<? super Task> action) {
+        super.forEach(action);
+    }
+
+    @Override
+    public Spliterator<Task> spliterator() {
+        return super.spliterator();
+    }
+
+    static class LinkedListIterator implements Iterator<Task> {
+        private final LinkedTaskList list;
+        private Element current;
+        private int count;
+
+        public LinkedListIterator(LinkedTaskList list) {
+            this.list = list;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return count < list.size();
+        }
+
+        @Override
+        public Task next() {
+            count++;
+            if (current == null) {
+                current = list.head;
+            } else {
+                current = current.next;
+            }
+            return current.task;
+        }
+
+        @Override
+        public void remove() {
+            list.remove(current.task);
+            count--;
+        }
     }
 
 }

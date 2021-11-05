@@ -1,6 +1,6 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
-public abstract class AbstractTaskList {
+public abstract class AbstractTaskList implements Iterable<Task> {
 
     abstract void add(Task task);
 

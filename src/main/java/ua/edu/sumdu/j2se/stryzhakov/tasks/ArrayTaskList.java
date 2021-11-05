@@ -1,6 +1,11 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 public class ArrayTaskList extends AbstractTaskList {
     private Task[] tasks = new Task[10];
@@ -31,13 +36,13 @@ public class ArrayTaskList extends AbstractTaskList {
      * @return if task is not find return false, else - true
      * @throws NullPointerException if task equals null
      */
-@Override
+    @Override
     public boolean remove(Task task) throws NullPointerException {
         if (task == null) {
             throw new NullPointerException("The task cannot be null");
         }
         if (tasks.length == 0) return false;
-        for (int i = 0; i < tasks.length - 1; i++) {
+        for (int i = 0; i < tasks.length; i++) {
             if (tasks[i].equals(task)) {
                 tasks[i] = null;
                 //Shift the array after removing element
@@ -71,7 +76,7 @@ public class ArrayTaskList extends AbstractTaskList {
      * @return The task with specific index
      * @throws IndexOutOfBoundsException if index out of bounds
      */
-@Override
+    @Override
     public Task getTask(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= tasks.length) {
             throw new IndexOutOfBoundsException("Index is out of bounds");
@@ -87,4 +92,53 @@ public class ArrayTaskList extends AbstractTaskList {
     ListTypes.types getType() {
         return ListTypes.types.ARRAY;
     }
+
+
+    @NotNull
+    @Override
+    public Iterator<Task> iterator() {
+        return new ArrayTaskListIterator(this);
+    }
+
+    @Override
+    public void forEach(Consumer<? super Task> action) {
+        super.forEach(action);
+    }
+
+    @Override
+    public Spliterator<Task> spliterator() {
+        return super.spliterator();
+    }
+
+    /**
+     * Iterator for ArrayTaskList class
+     */
+    static class ArrayTaskListIterator implements Iterator<Task> {
+        ArrayTaskList arrayTaskList;
+        Task temp;
+        private int count = 0;
+
+        public ArrayTaskListIterator(ArrayTaskList arrayTaskList) {
+            this.arrayTaskList = arrayTaskList;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return count < arrayTaskList.size();
+        }
+
+        @Override
+        public Task next() {
+            temp = arrayTaskList.getTask(count++);
+            return temp;
+        }
+
+        @Override
+        public void remove() {
+            arrayTaskList.remove(temp);
+            count--;
+
+        }
+    }
+
 }
