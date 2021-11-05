@@ -27,6 +27,7 @@ public class Main {
         list.remove(list.getTask(0));
 
         Iterator<Task> iterator = list.iterator();
+//        iterator.remove();
         while (iterator.hasNext()) {
             Task current = iterator.next();
 //            if(current.getTitle().equals("Test6")){
