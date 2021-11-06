@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class ArrayTaskList extends AbstractTaskList {
+public class ArrayTaskList extends AbstractTaskList implements Cloneable{
     private Task[] tasks = new Task[10];
     private int index = 0;
 
@@ -93,7 +93,6 @@ public class ArrayTaskList extends AbstractTaskList {
         return ListTypes.types.ARRAY;
     }
 
-
     @NotNull
     @Override
     public Iterator<Task> iterator() {
@@ -142,4 +141,16 @@ public class ArrayTaskList extends AbstractTaskList {
         }
     }
 
+    @Override
+    public ArrayTaskList clone() throws CloneNotSupportedException {
+        ArrayTaskList list =(ArrayTaskList) super.clone();
+        list.tasks = Arrays.copyOf(this.tasks, this.tasks.length);
+        return list;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(tasks);
+
+    }
 }

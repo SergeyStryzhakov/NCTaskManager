@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
+import java.util.Objects;
+
 public class Task {
     private String title;
     private int time;
@@ -8,6 +10,7 @@ public class Task {
     private int interval;
     private boolean active;
     private boolean repeated;
+
 
     /**
      * Create a non-repeated task
@@ -149,6 +152,42 @@ public class Task {
             }
         }
         return -1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return time == task.time &&
+                start == task.start &&
+                end == task.end &&
+                interval == task.interval &&
+                active == task.active &&
+                repeated == task.repeated &&
+                title.equals(task.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, time, start, end, interval, active, repeated);
+    }
+
+    @Override
+    public String toString() {
+        String msg;
+        if (!repeated) {
+            msg = "Задача: " + title +
+                    " Початок о " + time +
+                    " Активна: " + active;
+        } else {
+            msg = "Задача: " + title +
+                    " Початок о " + start +
+                    " з інтервалом " + interval +
+                    " і закінченням о " + end +
+                    ". Активна: " + active;
+        }
+        return msg;
     }
 }
 

@@ -3,6 +3,7 @@ package ua.edu.sumdu.j2se.stryzhakov.tasks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
@@ -177,5 +178,13 @@ public class LinkedTaskList extends AbstractTaskList {
             count--;
         }
     }
+
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(head);
+    }
+
 
 }
