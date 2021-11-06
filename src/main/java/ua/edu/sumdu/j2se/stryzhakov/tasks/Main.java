@@ -6,8 +6,8 @@ public class Main {
 
     public static void main(String[] args) throws CloneNotSupportedException {
 
-        AbstractTaskList list = TaskListFactory.createTaskList(ListTypes.types.ARRAY);
-        AbstractTaskList list1 = TaskListFactory.createTaskList(ListTypes.types.ARRAY);
+        AbstractTaskList list = TaskListFactory.createTaskList(ListTypes.types.LINKED);
+        AbstractTaskList list1 = TaskListFactory.createTaskList(ListTypes.types.LINKED);
 
         list.add(new Task("Кіно", 15));
         list.add(new Task("Кіно", 15));
@@ -15,10 +15,10 @@ public class Main {
         list.add(new Task("Кава", 18));
         list.add(new Task("Тренування", 10, 24, 5));
         list.add(new Task("Прийом ліків", 19));
-        AbstractTaskList list2 = TaskListFactory.createTaskList(ListTypes.types.ARRAY);
+        AbstractTaskList list2 = TaskListFactory.createTaskList(ListTypes.types.LINKED);
         list2 = (AbstractTaskList) list.clone();
-        //System.out.println(list.equals(list2));
-
+        System.out.println("Equals after clone is " + list.equals(list2));
+        System.out.println("Hash of list is " + list2.hashCode());
         list1.add(new Task("Кіно", 15));
         list1.add(new Task("Кіно", 15));
         list1.add(new Task("На роботу", 40));

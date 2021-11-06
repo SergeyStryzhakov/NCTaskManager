@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class LinkedTaskList extends AbstractTaskList {
+public class LinkedTaskList extends AbstractTaskList implements Cloneable {
     private Element head;
 
     /**
@@ -179,11 +179,23 @@ public class LinkedTaskList extends AbstractTaskList {
         }
     }
 
-
+    @Override
+    public LinkedTaskList clone() throws CloneNotSupportedException {
+        LinkedTaskList list = (LinkedTaskList) super.clone();
+        list.head = null;
+        for (int i = this.size() - 1; i >= 0; i--) {
+            list.add(this.getTask(i).clone());
+        }
+        return list;
+    }
 
     @Override
     public int hashCode() {
-        return Objects.hash(head);
+        int hash = 0;
+        for (Task task : this) {
+            hash += task.hashCode();
+        }
+        return hash;
     }
 
 

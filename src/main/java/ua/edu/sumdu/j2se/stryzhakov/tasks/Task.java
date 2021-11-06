@@ -2,7 +2,7 @@ package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
 import java.util.Objects;
 
-public class Task {
+public class Task implements Cloneable{
     private String title;
     private int time;
     private int start;
@@ -188,6 +188,13 @@ public class Task {
                     ". Активна: " + active;
         }
         return msg;
+    }
+
+    @Override
+    public Task clone() throws CloneNotSupportedException {
+        Task task = (Task)super.clone();
+        task.title = this.title;
+        return task;
     }
 }
 
