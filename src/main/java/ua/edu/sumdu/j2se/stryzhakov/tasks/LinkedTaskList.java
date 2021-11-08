@@ -1,6 +1,13 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
-public class LinkedTaskList extends AbstractTaskList {
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+
+public class LinkedTaskList extends AbstractTaskList implements Cloneable {
     private Element head;
 
     /**
@@ -9,10 +16,12 @@ public class LinkedTaskList extends AbstractTaskList {
     static class Element {
         private final Task task;
         private Element next;
+        private Element prev;
 
         public Element(Task task) {
             this.task = task;
             next = null;
+            prev = null;
         }
     }
 
@@ -30,6 +39,7 @@ public class LinkedTaskList extends AbstractTaskList {
         Element newElement = new Element(task);
         if (head != null) {
             newElement.next = head;
+            head.prev = newElement;
         }
         head = newElement;
 
@@ -50,12 +60,14 @@ public class LinkedTaskList extends AbstractTaskList {
         Element currentElement = head;
         Element previousElement = null;
         while (currentElement != null) {
-            if (currentElement.task == task) {
-                if (currentElement == head) {
+            if (currentElement.task.equals(task)) {
+                if (currentElement.equals(head)) {
                     head = currentElement.next;
                     return true;
                 }
+                previousElement.next.prev = currentElement.prev;
                 previousElement.next = currentElement.next;
+
                 return true;
             }
             previousElement = currentElement;
@@ -117,5 +129,74 @@ public class LinkedTaskList extends AbstractTaskList {
     ListTypes.types getType() {
         return ListTypes.types.LINKED;
     }
+
+    @NotNull
+    @Override
+    public Iterator<Task> iterator() {
+        return new LinkedListIterator(this);
+    }
+
+    @Override
+    public void forEach(Consumer<? super Task> action) {
+        super.forEach(action);
+    }
+
+    @Override
+    public Spliterator<Task> spliterator() {
+        return super.spliterator();
+    }
+
+    static class LinkedListIterator implements Iterator<Task> {
+        private final LinkedTaskList list;
+        private Element current;
+        private int count;
+
+        public LinkedListIterator(LinkedTaskList list) {
+            this.list = list;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return count < list.size();
+        }
+
+        @Override
+        public Task next() {
+            count++;
+            if (current == null) {
+                current = list.head;
+            } else {
+                current = current.next;
+            }
+            return current.task;
+        }
+
+        @Override
+        public void remove() throws IllegalStateException {
+            if (current == null) throw new IllegalStateException("Call remove without next!");
+            list.remove(current.task);
+            count--;
+        }
+    }
+
+    @Override
+    public LinkedTaskList clone() throws CloneNotSupportedException {
+        LinkedTaskList list = (LinkedTaskList) super.clone();
+        list.head = null;
+        for (int i = this.size() - 1; i >= 0; i--) {
+            list.add(this.getTask(i).clone());
+        }
+        return list;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        for (Task task : this) {
+            hash += task.hashCode();
+        }
+        return hash;
+    }
+
 
 }

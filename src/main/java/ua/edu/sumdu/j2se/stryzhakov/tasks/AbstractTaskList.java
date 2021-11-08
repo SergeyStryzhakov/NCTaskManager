@@ -1,6 +1,6 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
-public abstract class AbstractTaskList {
+public abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
 
     abstract void add(Task task);
 
@@ -11,6 +11,11 @@ public abstract class AbstractTaskList {
     abstract Task getTask(int index);
 
     abstract ListTypes.types getType();
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     /**
      * Create new list of tasks with specific condition
@@ -36,6 +41,32 @@ public abstract class AbstractTaskList {
         }
         return taskList;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        //String msg = "";
+        for (Task temp : this) {
+            builder.append(temp.toString());
+            builder.append("\n");
+            //msg += temp.toString() + "\n";
+        }
+        return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AbstractTaskList list = (AbstractTaskList) o;
+        if (this.size() != list.size()) return false;
+        for (int i = 0; i < this.size(); i++) {
+            if (!this.getTask(i).equals(list.getTask(i))) return false;
+        }
+        return true;
+    }
+
+
 }
 
 
