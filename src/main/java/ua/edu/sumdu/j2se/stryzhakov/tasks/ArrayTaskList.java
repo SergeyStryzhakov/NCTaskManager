@@ -1,13 +1,10 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.function.Consumer;
+import java.util.stream.Stream;
 
-public class ArrayTaskList extends AbstractTaskList implements Cloneable{
+public class ArrayTaskList extends AbstractTaskList implements Cloneable {
     private Task[] tasks = new Task[10];
     private int index = 0;
 
@@ -89,25 +86,26 @@ public class ArrayTaskList extends AbstractTaskList implements Cloneable{
      * for method "incoming" in abstract class
      */
     @Override
-    ListTypes.types getType() {
+    public ListTypes.types getType() {
         return ListTypes.types.ARRAY;
     }
 
-    @NotNull
+    /**
+     * Transform ArrayTaskList to stream
+     *
+     * @return Stream of array
+     */
+    @Override
+    public Stream<Task> getStream() {
+        return Arrays.stream(this.tasks);
+    }
+
+
     @Override
     public Iterator<Task> iterator() {
         return new ArrayTaskListIterator(this);
     }
 
-    @Override
-    public void forEach(Consumer<? super Task> action) {
-        super.forEach(action);
-    }
-
-    @Override
-    public Spliterator<Task> spliterator() {
-        return super.spliterator();
-    }
 
     /**
      * Iterator for ArrayTaskList class
@@ -143,7 +141,7 @@ public class ArrayTaskList extends AbstractTaskList implements Cloneable{
 
     @Override
     public ArrayTaskList clone() throws CloneNotSupportedException {
-        ArrayTaskList list =(ArrayTaskList) super.clone();
+        ArrayTaskList list = (ArrayTaskList) super.clone();
         list.tasks = Arrays.copyOf(this.tasks, this.tasks.length);
         return list;
     }

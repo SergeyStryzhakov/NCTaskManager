@@ -1,11 +1,9 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
-import org.jetbrains.annotations.NotNull;
-
+import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Objects;
-import java.util.Spliterator;
-import java.util.function.Consumer;
+
+import java.util.stream.Stream;
 
 public class LinkedTaskList extends AbstractTaskList implements Cloneable {
     private Element head;
@@ -126,25 +124,30 @@ public class LinkedTaskList extends AbstractTaskList implements Cloneable {
      * for method "incoming" in abstract class
      */
     @Override
-    ListTypes.types getType() {
+    public ListTypes.types getType() {
         return ListTypes.types.LINKED;
     }
 
-    @NotNull
+    /**
+     * Transform list to stream
+     *
+     * @return Stream from LinkedTaskList
+     */
+    @Override
+    public Stream<Task> getStream() {
+
+        Task[] tasks = new Task[this.size()];
+        for (int i = 0; i < this.size(); i++) {
+            tasks[i] = this.getTask(i);
+        }
+        return Arrays.stream(tasks);
+    }
+
     @Override
     public Iterator<Task> iterator() {
         return new LinkedListIterator(this);
     }
 
-    @Override
-    public void forEach(Consumer<? super Task> action) {
-        super.forEach(action);
-    }
-
-    @Override
-    public Spliterator<Task> spliterator() {
-        return super.spliterator();
-    }
 
     static class LinkedListIterator implements Iterator<Task> {
         private final LinkedTaskList list;
