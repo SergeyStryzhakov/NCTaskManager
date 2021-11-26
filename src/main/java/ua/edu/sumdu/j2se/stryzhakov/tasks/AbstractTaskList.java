@@ -1,5 +1,6 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -25,30 +26,24 @@ public abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
     /**
      * Create new list of tasks with specific condition
      *
-     * @param from Start of time interval
-     * @param to   End of time interval
+     * @param start Start of time interval
+     * @param end   End of time interval
      * @return List of the active tasks in specific time interval
      * @throws IllegalArgumentException if time less 0
      */
-    public final AbstractTaskList incoming(int from, int to) throws IllegalArgumentException {
-        if (from < 0 || to < 0) {
+    public final AbstractTaskList incoming(LocalDateTime start, LocalDateTime end) throws IllegalArgumentException {
+        if (start == null || end == null) {
             throw new IllegalArgumentException("Time cannot be negative");
         }
 
         AbstractTaskList taskList = TaskListFactory.createTaskList(this.getType());
+
         this.getStream().filter(Objects::nonNull)
-                .filter((t) -> (t.nextTimeAfter(from) != -1 &&
-                        t.nextTimeAfter(from) < to))
+                .filter((t) -> (t.nextTimeAfter(start) != null &&
+                        (t.nextTimeAfter(start).isBefore(end) ||
+                                t.nextTimeAfter(start).equals(end))))
                 .forEach(taskList::add);
-//
-//        for (int i = 0; i < size(); i++) {
-//            Task current = getTask(i);
-//            if (current.nextTimeAfter(from) != -1 &&
-//                    current.nextTimeAfter(from) < to) {
-//                taskList.add(current);
-//            }
-//            i++;
-//        }
+
         return taskList;
     }
 
