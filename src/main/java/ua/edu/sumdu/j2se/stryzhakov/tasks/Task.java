@@ -1,12 +1,13 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Task implements Cloneable{
+public class Task implements Cloneable {
     private String title;
-    private int time;
-    private int start;
-    private int end;
+    private LocalDateTime time;
+    private LocalDateTime start;
+    private LocalDateTime end;
     private int interval;
     private boolean active;
     private boolean repeated;
@@ -19,9 +20,9 @@ public class Task implements Cloneable{
      * @param time  Time to run the task
      * @throws IllegalArgumentException if title equals null or time < 0
      */
-    public Task(String title, int time) throws IllegalArgumentException {
-        if (title == null || time < 0) {
-            throw new IllegalArgumentException("The title cannot be null and the time cannot be a negative");
+    public Task(String title, LocalDateTime time) throws IllegalArgumentException {
+        if (title.isEmpty() || time == null) {
+            throw new IllegalArgumentException("The title and the time cannot be empty");
         }
         this.title = title;
         this.time = time;
@@ -36,9 +37,9 @@ public class Task implements Cloneable{
      * @param interval How often the task is been repeated.
      * @throws IllegalArgumentException if title equals null or interval < 0
      */
-    public Task(String title, int start, int end, int interval) throws IllegalArgumentException {
-        if (title == null || interval < 0) {
-            throw new IllegalArgumentException("The title cannot be null and the interval cannot be a negative");
+    public Task(String title, LocalDateTime start, LocalDateTime end, int interval) throws IllegalArgumentException {
+        if (title.isEmpty() || interval < 0) {
+            throw new IllegalArgumentException("The title cannot be empty and the interval cannot be a negative");
         }
         this.title = title;
         this.start = start;
@@ -52,8 +53,8 @@ public class Task implements Cloneable{
     }
 
     public void setTitle(String title) throws IllegalArgumentException {
-        if (title == null) {
-            throw new IllegalArgumentException("The title cannot be null");
+        if (title.isEmpty()) {
+            throw new IllegalArgumentException("The title cannot be empty");
         }
         this.title = title;
     }
@@ -62,15 +63,15 @@ public class Task implements Cloneable{
      * @return If the task is repeated then return time of the first run
      * else - time of start
      */
-    public int getTime() {
+    public LocalDateTime getTime() {
         return repeated ? start : time;
     }
 
-    public void setTime(int time) throws IllegalArgumentException {
-        if (time < 0) {
+    public void setTime(LocalDateTime time) throws IllegalArgumentException {
+        if (time == null) {
             throw new IllegalArgumentException("The time cannot be a negative");
         }
-        this.time = time;
+        this.time = time;//LocalDateTime.from(time);
         this.repeated = false;
     }
 
@@ -86,7 +87,7 @@ public class Task implements Cloneable{
      * @return If the task is repeated then return time of the first run
      * else - time of start
      */
-    public int getStartTime() {
+    public LocalDateTime getStartTime() {
         return repeated ? start : time;
     }
 
@@ -94,7 +95,7 @@ public class Task implements Cloneable{
      * @return If the task is repeated then return time of the last run
      * else - time of start
      */
-    public int getEndTime() {
+    public LocalDateTime getEndTime() {
         return repeated ? end : time;
     }
 
@@ -109,8 +110,8 @@ public class Task implements Cloneable{
     /**
      * Create repeated task from non-repeated
      */
-    public void setTime(int start, int end, int interval) throws IllegalArgumentException {
-        if (interval < 0 || start < 0 || end < 0) {
+    public void setTime(LocalDateTime start, LocalDateTime end, int interval) throws IllegalArgumentException {
+        if (interval < 0 || start == null || end == null) {
             throw new IllegalArgumentException("Time cannot be a negative");
         }
         this.repeated = true;
@@ -132,26 +133,23 @@ public class Task implements Cloneable{
      * or -1 if task is not active.
      * @throws IllegalArgumentException if current < 0
      */
-    public int nextTimeAfter(int current) throws IllegalArgumentException {
-        if (current < 0) {
+    public LocalDateTime nextTimeAfter(LocalDateTime current) throws IllegalArgumentException {
+        if (current == null) {
             throw new IllegalArgumentException("Current time cannot be a negative");
         }
         //if task is not active
-        if (!active) return -1;
+        if (!active) return null;
         //if task is active and not repeated
-        if (!repeated) {
-            if (current < time) return time;
-            return -1;
-        }
+        if (!repeated) return current.isBefore(time) ? time : null;
         //if task is active and repeated
-        if (current < start) return start;
-        if (current > end) return -1;
-        for (int i = start; i <= end; i += interval) {
-            if (i > current) {
+        if (current.isBefore(start)) return start;
+        if (current.isAfter(end)) return null;
+        for (LocalDateTime i = start; i.isBefore(end) || i.equals(end); i = i.plusSeconds(interval)) {
+            if (i.isAfter(current)) {
                 return i;
             }
         }
-        return -1;
+        return null;
     }
 
     @Override
@@ -192,7 +190,7 @@ public class Task implements Cloneable{
 
     @Override
     public Task clone() throws CloneNotSupportedException {
-        Task task = (Task)super.clone();
+        Task task = (Task) super.clone();
         task.title = this.title;
         return task;
     }
