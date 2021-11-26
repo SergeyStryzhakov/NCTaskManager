@@ -1,16 +1,21 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
+import java.util.Objects;
+import java.util.stream.Stream;
+
 public abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
 
-    abstract void add(Task task);
+    public abstract void add(Task task);
 
-    abstract boolean remove(Task task);
+    public abstract boolean remove(Task task);
 
-    abstract int size();
+    public abstract int size();
 
-    abstract Task getTask(int index);
+    public abstract Task getTask(int index);
 
-    abstract ListTypes.types getType();
+    public abstract ListTypes.types getType();
+
+    public abstract Stream<Task> getStream();
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
@@ -25,31 +30,35 @@ public abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
      * @return List of the active tasks in specific time interval
      * @throws IllegalArgumentException if time less 0
      */
-    public AbstractTaskList incoming(int from, int to) throws IllegalArgumentException {
+    public final AbstractTaskList incoming(int from, int to) throws IllegalArgumentException {
         if (from < 0 || to < 0) {
             throw new IllegalArgumentException("Time cannot be negative");
         }
 
         AbstractTaskList taskList = TaskListFactory.createTaskList(this.getType());
-        for (int i = 0; i < size(); i++) {
-            Task current = getTask(i);
-            if (current.nextTimeAfter(from) != -1 &&
-                    current.nextTimeAfter(from) < to) {
-                taskList.add(current);
-            }
-            i++;
-        }
+        this.getStream().filter(Objects::nonNull)
+                .filter((t) -> (t.nextTimeAfter(from) != -1 &&
+                        t.nextTimeAfter(from) < to))
+                .forEach(taskList::add);
+//
+//        for (int i = 0; i < size(); i++) {
+//            Task current = getTask(i);
+//            if (current.nextTimeAfter(from) != -1 &&
+//                    current.nextTimeAfter(from) < to) {
+//                taskList.add(current);
+//            }
+//            i++;
+//        }
         return taskList;
     }
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        //String msg = "";
+
         for (Task temp : this) {
             builder.append(temp.toString());
             builder.append("\n");
-            //msg += temp.toString() + "\n";
         }
         return builder.toString();
     }
