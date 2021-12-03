@@ -111,7 +111,7 @@ public class ArrayTaskList extends AbstractTaskList implements Cloneable {
      * Iterator for ArrayTaskList class
      */
     static class ArrayTaskListIterator implements Iterator<Task> {
-        ArrayTaskList arrayTaskList;
+        final ArrayTaskList arrayTaskList;
         Task temp;
         private int count = 0;
 

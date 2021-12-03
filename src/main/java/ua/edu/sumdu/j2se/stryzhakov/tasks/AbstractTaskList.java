@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public abstract class AbstractTaskList implements Iterable<Task>, Cloneable, Serializable {
+public abstract class AbstractTaskList implements Iterable<Task>, Serializable {
 
     public abstract void add(Task task);
 
@@ -19,10 +19,10 @@ public abstract class AbstractTaskList implements Iterable<Task>, Cloneable, Ser
 
     public abstract Stream<Task> getStream();
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
+//    @Override
+//    protected Object clone() throws CloneNotSupportedException {
+//        return super.clone();
+//    }
 
     /**
      * Create new list of tasks with specific condition

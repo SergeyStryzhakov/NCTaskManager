@@ -15,22 +15,24 @@ public class Task implements Cloneable, Serializable {
 
 
     /**
-     * Create a non-repeated task
+     * Create a non-repeated task.
      *
      * @param title Title of the task
      * @param time  Time to run the task
      * @throws IllegalArgumentException if title equals null or time < 0
      */
-    public Task(String title, LocalDateTime time) throws IllegalArgumentException {
+    public Task(String title, LocalDateTime time)
+                throws IllegalArgumentException {
         if (title.isEmpty() || time == null) {
-            throw new IllegalArgumentException("The title and the time cannot be empty");
+            throw new IllegalArgumentException("The title and the "
+                    + "time cannot be empty");
         }
         this.title = title;
         this.time = time;
     }
 
     /**
-     * Create a repeated task with specific parameters
+     * Create a repeated task with specific parameters.
      *
      * @param title    Title of the task
      * @param start    Start time of new task
@@ -38,9 +40,14 @@ public class Task implements Cloneable, Serializable {
      * @param interval How often the task is been repeated.
      * @throws IllegalArgumentException if title equals null or interval < 0
      */
-    public Task(String title, LocalDateTime start, LocalDateTime end, int interval) throws IllegalArgumentException {
+    public Task(String title,
+                LocalDateTime start,
+                LocalDateTime end,
+                int interval) throws IllegalArgumentException {
         if (title.isEmpty() || interval < 0) {
-            throw new IllegalArgumentException("The title cannot be empty and the interval cannot be a negative");
+            throw new IllegalArgumentException(
+                    "The title cannot be empty and " +
+                            "the interval cannot be a negative");
         }
         this.title = title;
         this.start = start;
@@ -72,7 +79,7 @@ public class Task implements Cloneable, Serializable {
         if (time == null) {
             throw new IllegalArgumentException("The time cannot be a negative");
         }
-        this.time = time;//LocalDateTime.from(time);
+        this.time = time;
         this.repeated = false;
     }
 
@@ -109,11 +116,13 @@ public class Task implements Cloneable, Serializable {
     }
 
     /**
-     * Create repeated task from non-repeated
+     * Create repeated task from non-repeated.
      */
-    public void setTime(LocalDateTime start, LocalDateTime end, int interval) throws IllegalArgumentException {
+    public void setTime(LocalDateTime start, LocalDateTime end, int interval)
+                                            throws IllegalArgumentException {
         if (interval < 0 || start == null || end == null) {
-            throw new IllegalArgumentException("Time cannot be a negative");
+            throw new IllegalArgumentException(
+                    "Time cannot be a negative");
         }
         this.repeated = true;
         this.start = start;
@@ -134,18 +143,30 @@ public class Task implements Cloneable, Serializable {
      * or -1 if task is not active.
      * @throws IllegalArgumentException if current < 0
      */
-    public LocalDateTime nextTimeAfter(LocalDateTime current) throws IllegalArgumentException {
+    public LocalDateTime nextTimeAfter(LocalDateTime current)
+                            throws IllegalArgumentException {
         if (current == null) {
-            throw new IllegalArgumentException("Current time cannot be a negative");
+            throw new IllegalArgumentException(
+                    "Current time cannot be a negative");
         }
         //if task is not active
-        if (!active) return null;
+        if (!active) {
+            return null;
+        }
         //if task is active and not repeated
-        if (!repeated) return current.isBefore(time) ? time : null;
+        if (!repeated) {
+            return current.isBefore(time) ? time : null;
+        }
         //if task is active and repeated
-        if (current.isBefore(start)) return start;
-        if (current.isAfter(end)) return null;
-        for (LocalDateTime i = start; i.isBefore(end) || i.equals(end); i = i.plusSeconds(interval)) {
+        if (current.isBefore(start)) {
+            return start;
+        }
+        if (current.isAfter(end)) {
+            return null;
+        }
+        for (LocalDateTime i = start;
+             i.isBefore(end) || i.equals(end);
+             i = i.plusSeconds(interval)) {
             if (i.isAfter(current)) {
                 return i;
             }
@@ -155,8 +176,12 @@ public class Task implements Cloneable, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Task task = (Task) o;
         return time == task.time &&
                 start == task.start &&
@@ -169,7 +194,8 @@ public class Task implements Cloneable, Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, time, start, end, interval, active, repeated);
+        return Objects.hash(title, time, start, end,
+                interval, active, repeated);
     }
 
     @Override

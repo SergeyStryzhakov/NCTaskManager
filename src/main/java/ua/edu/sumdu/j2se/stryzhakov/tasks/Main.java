@@ -1,10 +1,7 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Iterator;
-import java.util.stream.Stream;
 
 public class Main {
 
@@ -44,15 +41,12 @@ public class Main {
         LocalDateTime end = LocalDateTime.now().plusDays(2);
         System.out.println("========================================================");
         System.out.println(Tasks.calendar(arrayList, start, end));
-//        for (LocalDateTime dt : Tasks.calendar(arrayList, start,end).keySet()) {
-//            System.out.println(dt);
-//        }
         Iterable<Task> newList = Tasks.incoming(arrayList, start, end);
         for (Task task : newList) {
             System.out.println("After incoming in tasks: " + task);
         }
-        AbstractTaskList newListfromAbstract = arrayList.incoming(start, end);
-        for (Task task : newListfromAbstract) {
+        AbstractTaskList newListFromAbstract = arrayList.incoming(start, end);
+        for (Task task : newListFromAbstract) {
             System.out.println("After incoming in AbstractList: " + task);
         }
         File file = new File("Test.txt");
