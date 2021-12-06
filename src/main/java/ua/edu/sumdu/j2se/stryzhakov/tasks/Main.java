@@ -7,8 +7,8 @@ public class Main {
 
     public static void main(String[] args) throws CloneNotSupportedException, InterruptedException {
 
-        AbstractTaskList arrayList = TaskListFactory.createTaskList(ListTypes.types.LINKED);
-        AbstractTaskList list1 = TaskListFactory.createTaskList(ListTypes.types.LINKED);
+        AbstractTaskList arrayList = TaskListFactory.createTaskList(ListTypes.types.ARRAY);
+        AbstractTaskList list1 = TaskListFactory.createTaskList(ListTypes.types.ARRAY);
         Task walk = new Task("Walk", LocalDateTime.now().minusDays(1));
         Task running = new Task("Running", LocalDateTime.now().minusDays(1));
         Task homework = new Task("Homework", LocalDateTime.of(2021, 11, 23, 10, 0, 0),

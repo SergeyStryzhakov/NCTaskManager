@@ -25,19 +25,22 @@ public abstract class AbstractTaskList implements Iterable<Task>, Serializable {
 //    }
 
     /**
-     * Create new list of tasks with specific condition
+     * Create new list of tasks with specific condition.
      *
      * @param start Start of time interval
      * @param end   End of time interval
      * @return List of the active tasks in specific time interval
      * @throws IllegalArgumentException if time less 0
      */
-    public final AbstractTaskList incoming(LocalDateTime start, LocalDateTime end) throws IllegalArgumentException {
+    public final AbstractTaskList incoming(LocalDateTime start,
+                                           LocalDateTime end)
+            throws IllegalArgumentException {
         if (start == null || end == null) {
             throw new IllegalArgumentException("Time cannot be negative");
         }
 
-        AbstractTaskList taskList = TaskListFactory.createTaskList(this.getType());
+        AbstractTaskList taskList =
+                TaskListFactory.createTaskList(this.getType());
 
         this.getStream().filter(Objects::nonNull)
                 .filter((t) -> (t.nextTimeAfter(start) != null &&
@@ -61,12 +64,20 @@ public abstract class AbstractTaskList implements Iterable<Task>, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         AbstractTaskList list = (AbstractTaskList) o;
-        if (this.size() != list.size()) return false;
+        if (this.size() != list.size()) {
+            return false;
+        }
         for (int i = 0; i < this.size(); i++) {
-            if (!this.getTask(i).equals(list.getTask(i))) return false;
+            if (!this.getTask(i).equals(list.getTask(i))) {
+                return false;
+            }
         }
         return true;
     }
