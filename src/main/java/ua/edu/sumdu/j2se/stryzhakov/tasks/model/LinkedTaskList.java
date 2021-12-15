@@ -1,4 +1,4 @@
-package ua.edu.sumdu.j2se.stryzhakov.tasks;
+package ua.edu.sumdu.j2se.stryzhakov.tasks.model;
 
 import java.util.Arrays;
 import java.util.Iterator;

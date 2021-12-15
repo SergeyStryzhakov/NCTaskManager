@@ -1,0 +1,136 @@
+[
+  {
+    "title": "Running",
+    "time": {
+      "date": {
+        "year": 2021,
+        "month": 12,
+        "day": 5
+      },
+      "time": {
+        "hour": 22,
+        "minute": 55,
+        "second": 32,
+        "nano": 167000000
+      }
+    },
+    "interval": 0,
+    "active": true,
+    "repeated": false
+  },
+  {
+    "title": "Walk",
+    "time": {
+      "date": {
+        "year": 2021,
+        "month": 12,
+        "day": 5
+      },
+      "time": {
+        "hour": 22,
+        "minute": 55,
+        "second": 32,
+        "nano": 112000000
+      }
+    },
+    "interval": 0,
+    "active": true,
+    "repeated": false
+  },
+  {
+    "title": "Homework",
+    "start": {
+      "date": {
+        "year": 2021,
+        "month": 11,
+        "day": 23
+      },
+      "time": {
+        "hour": 10,
+        "minute": 0,
+        "second": 0,
+        "nano": 0
+      }
+    },
+    "end": {
+      "date": {
+        "year": 2021,
+        "month": 11,
+        "day": 29
+      },
+      "time": {
+        "hour": 14,
+        "minute": 0,
+        "second": 0,
+        "nano": 0
+      }
+    },
+    "interval": 5000,
+    "active": true,
+    "repeated": true
+  },
+  {
+    "title": "Sport",
+    "start": {
+      "date": {
+        "year": 2021,
+        "month": 12,
+        "day": 6
+      },
+      "time": {
+        "hour": 22,
+        "minute": 55,
+        "second": 32,
+        "nano": 167000000
+      }
+    },
+    "end": {
+      "date": {
+        "year": 2022,
+        "month": 1,
+        "day": 20
+      },
+      "time": {
+        "hour": 22,
+        "minute": 55,
+        "second": 32,
+        "nano": 167000000
+      }
+    },
+    "interval": 450000,
+    "active": true,
+    "repeated": true
+  },
+  {
+    "title": "Super sport",
+    "start": {
+      "date": {
+        "year": 2021,
+        "month": 12,
+        "day": 6
+      },
+      "time": {
+        "hour": 22,
+        "minute": 55,
+        "second": 32,
+        "nano": 167000000
+      }
+    },
+    "end": {
+      "date": {
+        "year": 2022,
+        "month": 1,
+        "day": 20
+      },
+      "time": {
+        "hour": 22,
+        "minute": 55,
+        "second": 32,
+        "nano": 167000000
+      }
+    },
+    "interval": 450000,
+    "active": true,
+    "repeated": true
+  }
+]
