@@ -2,6 +2,7 @@ package ua.edu.sumdu.j2se.stryzhakov.tasks.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task implements Cloneable, Serializable {
@@ -13,6 +14,9 @@ public class Task implements Cloneable, Serializable {
     private boolean active;
     private boolean repeated;
 
+    public void setRepeated(boolean repeated) {
+        this.repeated = repeated;
+    }
 
     /**
      * Create a non-repeated task.
@@ -203,16 +207,22 @@ public class Task implements Cloneable, Serializable {
         String msg;
         if (!repeated) {
             msg = "Задача: " + title +
-                    " Початок о " + time +
+                    " Початок " + stringFromDate(time) +
                     " Активна: " + active;
         } else {
             msg = "Задача: " + title +
-                    " Початок о " + start +
-                    " з інтервалом " + interval +
-                    " і закінченням о " + end +
+                    " Початок " + stringFromDate(start) +
+                    " з інтервалом " + interval / 60 +
+                    " хв. закінчення " + stringFromDate(end) +
                     ". Активна: " + active;
         }
         return msg;
+    }
+
+    private String stringFromDate(LocalDateTime date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+       return date.format(formatter);
+
     }
 
     @Override

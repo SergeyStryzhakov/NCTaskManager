@@ -19,10 +19,6 @@ public abstract class AbstractTaskList implements Iterable<Task>, Serializable {
 
     public abstract Stream<Task> getStream();
 
-//    @Override
-//    protected Object clone() throws CloneNotSupportedException {
-//        return super.clone();
-//    }
 
     /**
      * Create new list of tasks with specific condition.

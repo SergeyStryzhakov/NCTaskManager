@@ -43,7 +43,6 @@ public class Tasks {
             if (task == null || !task.isActive()) continue;
             if (task.isRepeated()) {
                 while (startTime.isBefore(end)) {
-                    //System.out.println(task.nextTimeAfter(startTime));
                     if(task.nextTimeAfter(startTime) == null ) break;
                     addTaskToCalendar(task, task.nextTimeAfter(startTime));
                     startTime = startTime.plusSeconds(task.getRepeatInterval());

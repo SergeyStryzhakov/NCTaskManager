@@ -1,25 +1,40 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks.model;
 
 import java.io.File;
-import java.time.LocalDateTime;
 
 public class Model {
-    private final String JSON_DATA = "tasks.json";
-    private AbstractTaskList list = new ArrayTaskList();
-    private LocalDateTime fromDate;
-    private LocalDateTime toDate;
+    private final String db = "tasks.json";
+    private AbstractTaskList list = TaskListFactory.createTaskList(ListTypes.types.ARRAY);
+    private Task currentTask;
     private static Model instance;
 
+
     private Model() {
-        File file = new File(JSON_DATA);
+        getData();
+    }
+
+    private void getData() {
+        File file = new File(db);
         TaskIO.readText(list, file);
     }
 
-    public static Model getInstanse() {
+    public void save(AbstractTaskList list) {
+        TaskIO.writeText(list, new File(db));
+    }
+
+    public static Model getInstance() {
         if (instance == null) {
             instance = new Model();
         }
         return instance;
+    }
+
+    public Task getCurrentTask() {
+        return currentTask;
+    }
+
+    public void setCurrentTask(Task currentTask) {
+        this.currentTask = currentTask;
     }
 
     public AbstractTaskList getList() {
@@ -30,19 +45,5 @@ public class Model {
         this.list = list;
     }
 
-    public LocalDateTime getFromDate() {
-        return fromDate;
-    }
 
-    public void setFromDate(LocalDateTime fromDate) {
-        this.fromDate = fromDate;
-    }
-
-    public LocalDateTime getToDate() {
-        return toDate;
-    }
-
-    public void setToDate(LocalDateTime toDate) {
-        this.toDate = toDate;
-    }
 }

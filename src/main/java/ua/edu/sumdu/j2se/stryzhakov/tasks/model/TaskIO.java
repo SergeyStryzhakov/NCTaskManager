@@ -72,17 +72,7 @@ public class TaskIO {
      * @param tasks List for read
      * @param out   Stream for write
      */
-//    public static void write(AbstractTaskList tasks, Writer out) {
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//        AbstractTaskList tempList = new ArrayTaskList();
-//        tasks.getStream().filter(Objects::nonNull).forEach(tempList::add);
-//        try (Writer writer = new BufferedWriter(out)) {
-//            writer.write(gson.toJson(tempList));
-//            writer.flush();
-//        } catch (IOException e) {
-//            System.out.println("Cannot write to JSON stream");
-//        }
-//    }
+
     public static void write(AbstractTaskList tasks, Writer out) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         List<Task> tempList = new ArrayList<>();

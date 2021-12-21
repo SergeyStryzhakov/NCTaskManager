@@ -1,33 +1,29 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks.view;
 
-import ua.edu.sumdu.j2se.stryzhakov.tasks.controller.Action;
-import ua.edu.sumdu.j2se.stryzhakov.tasks.utils.Utils;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class MainView extends View{
+public class MainView implements Viewable {
 
-
-
-    public Action show() {
+    @Override
+    public int show(String text) {
+        Scanner scanner = new Scanner(System.in);
+        int userChoice = 0;
         System.out.println("-----------Choose item and press Enter-------------------------");
-        System.out.println("1: Show all tasks");
-        System.out.println("2: Show calendar (You need to enter start and finish date)");
-        System.out.println("3: Exit");
-        int choose = checkUserChoose();
-        if (choose < 1 || choose > 3) {
-            System.out.println("Please, enter a correct number!");
-            this.show();
-        }
-        switch (choose){
-            case 1:
-                return Action.SHOW;
-            case 2:
-                return Action.CALENDAR;
-            case 3:
-                System.exit(0);
+        System.out.println("1: Add new task");
+        System.out.println("2: Show all tasks");
+        System.out.println("3: Show calendar (You must enter start and finish date)");
+        System.out.println("4: Exit");
 
+        try {
+            userChoice = Integer.parseInt(scanner.nextLine());
+            if (userChoice < 1 || userChoice > 4) throw new InputMismatchException();
+        } catch (NumberFormatException | InputMismatchException e) {
+            System.out.println("Please, enter a correct number!");
+            this.show(text);
         }
-        return Action.SHOW;
+        return userChoice;
     }
+
 }

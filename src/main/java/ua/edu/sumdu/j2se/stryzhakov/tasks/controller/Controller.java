@@ -1,6 +1,16 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks.controller;
 
-public abstract class Controller {
-    public Action action;
-public abstract void start();
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public interface Controller {
+
+    void start();
+    default LocalDateTime dateFromString(String data) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime tempDate = null;
+        tempDate = LocalDateTime.parse(data, formatter);
+        return tempDate;
+    }
+
 }
