@@ -6,9 +6,10 @@ import java.time.format.DateTimeFormatter;
 public interface Controller {
 
     void start();
+
     default LocalDateTime dateFromString(String data) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime tempDate = null;
+        LocalDateTime tempDate;
         tempDate = LocalDateTime.parse(data, formatter);
         return tempDate;
     }

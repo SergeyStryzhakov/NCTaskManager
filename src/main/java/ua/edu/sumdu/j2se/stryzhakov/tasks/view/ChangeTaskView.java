@@ -71,7 +71,7 @@ public class ChangeTaskView implements Viewable {
     public int show(String text) {
         int userChoice = 0;
         System.out.println(text);
-        System.out.println("Save?\n1. Yes\n2. No (Return to main menu)");
+        System.out.println("Save this task?\n1. Yes\n2. No ");
         try {
             userChoice = Integer.parseInt(scanner.nextLine());
             if (userChoice < 1 || userChoice > 2) throw new InputMismatchException();

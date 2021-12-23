@@ -23,6 +23,13 @@ public class CalendarController implements Controller {
         this.model = model;
     }
 
+    /**
+     * Get calendar with particular date
+     *
+     * @param dateFrom Begin date
+     * @param dateTo   finish date
+     * @return Calendar as string for show in view
+     */
     private String getCalendar(LocalDateTime dateFrom, LocalDateTime dateTo) {
         AbstractTaskList list;
         SortedMap<LocalDateTime, Set<Task>> calendar;
@@ -36,7 +43,9 @@ public class CalendarController implements Controller {
                 + dateFrom.format(formatter)
                 + " to "
                 + dateTo.format(formatter) + "---------------");
-
+        if (calendar.isEmpty()) {
+            builder.append("Unfortunately, no task for selected dates.");
+        }
         for (LocalDateTime dateTime : calendar.keySet()) {
             for (Task task : calendar.get(dateTime)) {
                 builder.append(dateTime.format(formatter))
@@ -50,19 +59,17 @@ public class CalendarController implements Controller {
 
     @Override
     public void start() {
-        LocalDateTime dateFrom;
-        LocalDateTime dateTo;
+        LocalDateTime dateFrom = LocalDateTime.now();
+        LocalDateTime dateTo = LocalDateTime.now().plusDays(7);
         int userChoice;
-
+        Action action = Action.MAIN;
         userChoice = view.show("");
         switch (userChoice) {
             case 1:
-                dateFrom = LocalDateTime.now();
-                dateTo = LocalDateTime.now().plusDays(7);
                 view.setMaxUserChoice(2);
                 userChoice = view.show(getCalendar(dateFrom, dateTo));
-                if (userChoice == 1) {
-                    ControllerFactory.selectController(Action.MAIN).start();
+                if (userChoice == 2 && model.isChanged()) {
+                    action = Action.SAVE;
                 } else {
                     System.exit(0);
                 }
@@ -73,19 +80,27 @@ public class CalendarController implements Controller {
                 if (dateTo.isBefore(dateFrom)) {
                     System.out.println("The end date is earlier then the start date. Try again!");
                     start();
-                    view.setMaxUserChoice(2);
-                    userChoice = view.show(getCalendar(dateFrom, dateTo));
-                    if (userChoice == 1) {
-                        ControllerFactory.selectController(Action.MAIN).start();
-                    } else {
-                        System.exit(0);
-                    }
                 }
+                view.setMaxUserChoice(2);
+                userChoice = view.show(getCalendar(dateFrom, dateTo));
+                if (userChoice == 2 && model.isChanged()) {
+                    action = Action.SAVE;
+                } else if (userChoice == 1) {
+                    action = Action.MAIN;
+                } else {
+                    System.exit(0);
+                }
+                break;
             case 3:
-                ControllerFactory.selectController(Action.MAIN).start();
+                action = Action.MAIN;
+                break;
             case 4:
-                System.exit(0);
+                if (model.isChanged()) {
+                    action = Action.SAVE;
+                } else {
+                    System.exit(0);
+                }
         }
-
+        ControllerFactory.selectController(action).start();
     }
 }

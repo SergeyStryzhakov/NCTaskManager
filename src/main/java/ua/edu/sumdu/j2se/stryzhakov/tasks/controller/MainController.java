@@ -15,21 +15,24 @@ public class MainController implements Controller {
     @Override
     public void start() {
         int userChoice = view.show("");
-        Action action;
+        Action action = Action.MAIN;
         switch (userChoice) {
             case 1:
-                action = Action.CHANGE;
+                action = Action.SHOW;
                 break;
             case 2:
-                action = Action.SHOW;
+                action = Action.CHANGE;
                 break;
             case 3:
                 action = Action.CALENDAR;
                 break;
             case 4:
-                System.exit(0);
-            default:
-                action = Action.MAIN;
+                if (model.isChanged()) {
+                    action = Action.SAVE;
+                } else {
+                    System.exit(0);
+                }
+                break;
         }
         ControllerFactory.selectController(action).start();
     }

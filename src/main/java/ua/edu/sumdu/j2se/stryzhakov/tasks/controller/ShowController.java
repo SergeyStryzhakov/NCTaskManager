@@ -21,17 +21,28 @@ public class ShowController implements Controller {
 
     }
 
+    /**
+     * Get list of tasks from model
+     */
     private void getTasks() {
         taskList = model.getList();
         sizeList = taskList.size();
 
     }
 
+    /**
+     * Create string from list of tasks
+     *
+     * @return list as string for show in the view
+     */
     private String createListAllTasks() {
         getTasks();
         mainMenu = sizeList;
         exit = sizeList + 1;
         StringBuilder builder = new StringBuilder();
+        if(sizeList == 0) {
+            builder.append("List of tasks is empty. Please, add task from main menu.\n");
+        }
         for (int i = 0; i < sizeList; i++) {
             builder.append(i)
                     .append(". ")
@@ -43,35 +54,53 @@ public class ShowController implements Controller {
         return builder.toString();
     }
 
-    private String changeTask(int index) {
+    /**
+     * Select task for change or remove by index from tasklist
+     *
+     * @param index of task
+     * @return Selected task as string for change or remove
+     */
+    private String selectTask(int index) {
         task = taskList.getTask(index);
         return task.toString() +
                 "\n1. Edit task\n2. Delete task\n";
     }
 
+    /**
+     * Select controller depends on user choice
+     * Menu item such as "return to main menu" and "Exit"
+     * have a dynamic number depends on size of the task list
+     */
     @Override
     public void start() {
+        Action action = Action.MAIN;
         int userChoice = view.show(createListAllTasks());
         if (userChoice < 0 || userChoice > sizeList + 1) {
             System.out.println("Enter a correct number");
             this.start();
         }
         if (userChoice == mainMenu) {
-            ControllerFactory.selectController(Action.MAIN).start();
+            action = Action.MAIN;
         } else if (userChoice == exit) {
-            System.exit(0);
+            if (model.isChanged()) {
+                action = Action.SAVE;
+            } else {
+                System.exit(0);
+            }
         } else {
-            userChoice = view.show(changeTask(userChoice));
+            userChoice = view.show(selectTask(userChoice));
             switch (userChoice) {
                 case 1:
                     model.setCurrentTask(task);
-                    ControllerFactory.selectController(Action.CHANGE).start();
+                    action = Action.CHANGE;
+                    break;
                 case 2:
                     taskList.remove(task);
-                    ControllerFactory.selectController(Action.SHOW).start();
+                    action = Action.SHOW;
+                    break;
             }
         }
-
+        ControllerFactory.selectController(action).start();
 
     }
 

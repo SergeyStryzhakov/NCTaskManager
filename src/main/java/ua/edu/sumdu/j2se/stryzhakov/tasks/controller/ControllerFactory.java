@@ -1,10 +1,7 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks.controller;
 
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Model;
-import ua.edu.sumdu.j2se.stryzhakov.tasks.view.CalendarView;
-import ua.edu.sumdu.j2se.stryzhakov.tasks.view.ChangeTaskView;
-import ua.edu.sumdu.j2se.stryzhakov.tasks.view.MainView;
-import ua.edu.sumdu.j2se.stryzhakov.tasks.view.ShowView;
+import ua.edu.sumdu.j2se.stryzhakov.tasks.view.*;
 
 public class ControllerFactory {
 
@@ -16,6 +13,8 @@ public class ControllerFactory {
                 return new CalendarController(new CalendarView(), Model.getInstance());
             case SHOW:
                 return new ShowController(new ShowView(), Model.getInstance());
+            case SAVE:
+                return new SaveController(new SaveView(), Model.getInstance());
             default:
                 return new MainController(new MainView(), Model.getInstance());
         }

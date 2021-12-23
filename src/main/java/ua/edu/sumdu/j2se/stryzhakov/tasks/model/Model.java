@@ -6,6 +6,7 @@ public class Model {
     private final String db = "tasks.json";
     private AbstractTaskList list = TaskListFactory.createTaskList(ListTypes.types.ARRAY);
     private Task currentTask;
+    private boolean changed;
     private static Model instance;
 
 
@@ -16,6 +17,15 @@ public class Model {
     private void getData() {
         File file = new File(db);
         TaskIO.readText(list, file);
+
+    }
+
+    public boolean isChanged() {
+        return changed;
+    }
+
+    public void setChanged(boolean changed) {
+        this.changed = changed;
     }
 
     public void save(AbstractTaskList list) {

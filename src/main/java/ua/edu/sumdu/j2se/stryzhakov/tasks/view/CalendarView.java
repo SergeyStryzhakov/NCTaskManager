@@ -18,13 +18,12 @@ public class CalendarView implements Viewable {
 
     @Override
     public int show(String text) {
-
         int userChoice = 0;
         if (text.isEmpty()) {
             maxUserChoice = 4;
             System.out.println("---------------Select date for show calendar---------------");
-            System.out.println("1. For week from today");
-            System.out.println("2. Specific date");
+            System.out.println("1. For the next week");
+            System.out.println("2. User date");
             System.out.println("3. Main menu");
             System.out.println("4. Exit");
         } else {

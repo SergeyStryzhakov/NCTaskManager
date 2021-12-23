@@ -58,6 +58,7 @@ public abstract class AbstractTaskList implements Iterable<Task>, Serializable {
         return builder.toString();
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
