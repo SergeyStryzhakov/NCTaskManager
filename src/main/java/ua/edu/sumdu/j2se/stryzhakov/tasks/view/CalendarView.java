@@ -1,9 +1,13 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks.view;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CalendarView implements Viewable {
+    private static final Logger logger = LoggerFactory.getLogger(CalendarView.class);
     private final Scanner scanner = new Scanner(System.in);
     private int maxUserChoice;
 
@@ -13,7 +17,9 @@ public class CalendarView implements Viewable {
 
     public String getDate(String period) {
         System.out.println("Enter date of " + period + " calendar in format (yyyy-MM-dd HH:mm)");
-        return scanner.nextLine();
+        String temp = scanner.nextLine();
+        logger.info("User data for {} is {} ", period, temp);
+        return temp;
     }
 
     @Override
@@ -33,8 +39,10 @@ public class CalendarView implements Viewable {
         }
         try {
             userChoice = Integer.parseInt(scanner.nextLine());
+            logger.info("User choice is {} ", userChoice);
             if (userChoice < 1 || userChoice > maxUserChoice) throw new InputMismatchException();
         } catch (NumberFormatException | InputMismatchException e) {
+            logger.error(e.getMessage());
             System.out.println("Please, enter a correct number!");
             this.show(text);
         }

@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Model;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Task;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.view.ChangeTaskView;
@@ -8,6 +10,7 @@ import ua.edu.sumdu.j2se.stryzhakov.tasks.view.Viewable;
 import java.time.LocalDateTime;
 
 public class ChangeTaskController implements Controller {
+    private static final Logger logger = LoggerFactory.getLogger(ChangeTaskController.class);
     private final Model model;
     private final ChangeTaskView view;
     private Task task;
@@ -23,6 +26,7 @@ public class ChangeTaskController implements Controller {
         this.view = (ChangeTaskView) view;
         this.model = model;
         this.task = model.getCurrentTask();
+        logger.info("Start ChangeTaskController");
     }
 
     /**
@@ -37,13 +41,15 @@ public class ChangeTaskController implements Controller {
             if (repeat) {
                 endTime = view.getTimeTask("end");
                 if (dateFromString(endTime).isBefore(dateFromString(startTime))) {
+                    logger.error("Date {} > date {}",endTime,startTime);
                     System.out.println("The end date cannot be earlier the start date!");
                     getUserData();
                 }
                 interval = view.getInterval() * 60;
             }
         } catch (Exception e) {
-            System.out.println("Invalid value, try again.");
+            logger.error(e.getMessage());
+            System.out.println("Invalid date, try again by pattern");
             getUserData();
         }
     }
@@ -52,6 +58,7 @@ public class ChangeTaskController implements Controller {
      * Create a new task
      */
     private void createTask() {
+        logger.info("Create task is started");
         if (title.isEmpty()) createTask();
         if (repeat) {
             task = new Task(title,
@@ -64,6 +71,8 @@ public class ChangeTaskController implements Controller {
         task.setRepeated(repeat);
         task.setActive(active);
         model.setChanged(true);
+        logger.info("Task created: {}", task.toString());
+        logger.info("Create task is ended");
     }
 
     /**
@@ -72,6 +81,8 @@ public class ChangeTaskController implements Controller {
      * @param task for edit
      */
     private void editTask(Task task) {
+        logger.info("Start editing task");
+        logger.info("Task before edit: {}", task.toString());
         title = title.isEmpty() ? task.getTitle() : title;
         task.setTitle(title);
         LocalDateTime start = startTime.isEmpty()
@@ -90,14 +101,18 @@ public class ChangeTaskController implements Controller {
         task.setRepeated(repeat);
         task.setActive(active);
         model.setChanged(true);
+        logger.info("Task after edit: {}", task.toString());
+        logger.info("End editing task.");
     }
 
     @Override
     public void start() {
         getUserData();
         if (task == null) {
+            logger.info("Create task called");
             createTask();
         } else {
+            logger.info("Edit task called");
             editTask(task);
         }
         int userChoice = view.show(task.toString());
@@ -105,6 +120,7 @@ public class ChangeTaskController implements Controller {
             case 1:
                 if (model.getCurrentTask() == null) {
                     model.getList().add(task);
+                    logger.info("Add new task to list");
                 }
                 model.setCurrentTask(null);
             case 2:

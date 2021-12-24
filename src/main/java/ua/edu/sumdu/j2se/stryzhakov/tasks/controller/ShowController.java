@@ -1,11 +1,14 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.AbstractTaskList;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Model;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Task;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.view.Viewable;
 
 public class ShowController implements Controller {
+    private static final Logger logger = LoggerFactory.getLogger(ShowController.class);
     private final Viewable view;
     private final Model model;
     private AbstractTaskList taskList;
@@ -18,7 +21,7 @@ public class ShowController implements Controller {
     public ShowController(Viewable view, Model model) {
         this.view = view;
         this.model = model;
-
+logger.info("Start show controller");
     }
 
     /**
@@ -27,7 +30,7 @@ public class ShowController implements Controller {
     private void getTasks() {
         taskList = model.getList();
         sizeList = taskList.size();
-
+logger.info("Task list have got.");
     }
 
     /**
@@ -39,6 +42,7 @@ public class ShowController implements Controller {
         getTasks();
         mainMenu = sizeList;
         exit = sizeList + 1;
+        logger.info("Main menu number is {}, exit number is {}", mainMenu, exit);
         StringBuilder builder = new StringBuilder();
         if(sizeList == 0) {
             builder.append("List of tasks is empty. Please, add task from main menu.\n");
@@ -51,6 +55,7 @@ public class ShowController implements Controller {
         }
         builder.append(mainMenu).append(". Return to main menu").append("\n");
         builder.append(exit).append(". Exit");
+        logger.info("String builder created successful");
         return builder.toString();
     }
 
@@ -61,6 +66,7 @@ public class ShowController implements Controller {
      * @return Selected task as string for change or remove
      */
     private String selectTask(int index) {
+logger.info("Selected tas index is {}", index);
         task = taskList.getTask(index);
         return task.toString() +
                 "\n1. Edit task\n2. Delete task\n";
@@ -76,6 +82,7 @@ public class ShowController implements Controller {
         Action action = Action.MAIN;
         int userChoice = view.show(createListAllTasks());
         if (userChoice < 0 || userChoice > sizeList + 1) {
+            logger.error("Incorrect user choice, selected {}", userChoice);
             System.out.println("Enter a correct number");
             this.start();
         }
@@ -85,6 +92,7 @@ public class ShowController implements Controller {
             if (model.isChanged()) {
                 action = Action.SAVE;
             } else {
+                logger.info("Exit without saving");
                 System.exit(0);
             }
         } else {

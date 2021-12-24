@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.AbstractTaskList;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Model;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Task;
@@ -13,7 +15,7 @@ import java.util.Set;
 import java.util.SortedMap;
 
 public class CalendarController implements Controller {
-
+    private static final Logger logger = LoggerFactory.getLogger(CalendarController.class);
     private final CalendarView view;
     private final Model model;
 
@@ -21,6 +23,7 @@ public class CalendarController implements Controller {
     public CalendarController(Viewable view, Model model) {
         this.view = (CalendarView) view;
         this.model = model;
+        logger.info("Start CalendarController");
     }
 
     /**
@@ -31,6 +34,7 @@ public class CalendarController implements Controller {
      * @return Calendar as string for show in view
      */
     private String getCalendar(LocalDateTime dateFrom, LocalDateTime dateTo) {
+        logger.info("GetCalendar is called");
         AbstractTaskList list;
         SortedMap<LocalDateTime, Set<Task>> calendar;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
@@ -38,12 +42,13 @@ public class CalendarController implements Controller {
 
         list = model.getList();
         calendar = Tasks.calendar(list, dateFrom, dateTo);
-
+        logger.info("Create header of calendar");
         System.out.println("---------------Calendar of tasks from "
                 + dateFrom.format(formatter)
                 + " to "
                 + dateTo.format(formatter) + "---------------");
         if (calendar.isEmpty()) {
+            logger.info("Calendar is empty");
             builder.append("Unfortunately, no task for selected dates.");
         }
         for (LocalDateTime dateTime : calendar.keySet()) {
@@ -54,6 +59,7 @@ public class CalendarController implements Controller {
                         .append("\n");
             }
         }
+        logger.info("Calendar is created successful, size is {}", calendar.keySet().size());
         return builder.toString();
     }
 
@@ -66,15 +72,18 @@ public class CalendarController implements Controller {
         userChoice = view.show("");
         switch (userChoice) {
             case 1:
+                logger.info("Calendar for a week");
                 view.setMaxUserChoice(2);
                 userChoice = view.show(getCalendar(dateFrom, dateTo));
                 if (userChoice == 2 && model.isChanged()) {
                     action = Action.SAVE;
                 } else {
+                    logger.info("Exit without saving");
                     System.exit(0);
                 }
                 break;
             case 2:
+                logger.info("Calendar for user date");
                 dateFrom = dateFromString(view.getDate("start"));
                 dateTo = dateFromString(view.getDate("end"));
                 if (dateTo.isBefore(dateFrom)) {
@@ -88,6 +97,7 @@ public class CalendarController implements Controller {
                 } else if (userChoice == 1) {
                     action = Action.MAIN;
                 } else {
+                    logger.info("Exit without saving");
                     System.exit(0);
                 }
                 break;
@@ -98,6 +108,7 @@ public class CalendarController implements Controller {
                 if (model.isChanged()) {
                     action = Action.SAVE;
                 } else {
+                    logger.info("Exit without saving");
                     System.exit(0);
                 }
         }
