@@ -5,12 +5,16 @@ import org.slf4j.LoggerFactory;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Model;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.view.Viewable;
 
+/**
+ * Check changes in task list and save it.
+ */
 public class SaveController implements Controller {
-    private static final Logger logger = LoggerFactory.getLogger(SaveController.class);
-    private Viewable view;
-    private Model model;
+    private static final Logger logger = LoggerFactory
+            .getLogger(SaveController.class);
+    private final Viewable view;
+    private final Model model;
 
-    public SaveController(Viewable view, Model model) {
+    public SaveController(final Viewable view, final Model model) {
         this.view = view;
         this.model = model;
         logger.info("Start save controller");

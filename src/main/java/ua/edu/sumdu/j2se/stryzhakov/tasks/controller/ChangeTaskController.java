@@ -9,8 +9,13 @@ import ua.edu.sumdu.j2se.stryzhakov.tasks.view.Viewable;
 
 import java.time.LocalDateTime;
 
+/**
+ * This class can edit task and create user with parameter.
+ * from ChangeTaskView
+ */
 public class ChangeTaskController implements Controller {
-    private static final Logger logger = LoggerFactory.getLogger(ChangeTaskController.class);
+    private static final Logger logger = LoggerFactory
+            .getLogger(ChangeTaskController.class);
     private final Model model;
     private final ChangeTaskView view;
     private Task task;
@@ -22,7 +27,7 @@ public class ChangeTaskController implements Controller {
     private boolean active;
 
 
-    public ChangeTaskController(Viewable view, Model model) {
+    public ChangeTaskController(final Viewable view, final Model model) {
         this.view = (ChangeTaskView) view;
         this.model = model;
         this.task = model.getCurrentTask();
@@ -30,7 +35,7 @@ public class ChangeTaskController implements Controller {
     }
 
     /**
-     * Get data from view for create/edit the task
+     * Get data from view for create/edit the task.
      */
     private void getUserData() {
         try {
@@ -40,9 +45,11 @@ public class ChangeTaskController implements Controller {
             startTime = view.getTimeTask("start");
             if (repeat) {
                 endTime = view.getTimeTask("end");
-                if (dateFromString(endTime).isBefore(dateFromString(startTime))) {
-                    logger.error("Date {} > date {}",endTime,startTime);
-                    System.out.println("The end date cannot be earlier the start date!");
+                if (dateFromString(endTime)
+                        .isBefore(dateFromString(startTime))) {
+                    logger.error("Date {} > date {}", endTime, startTime);
+                    System.out.println("The end date cannot be"
+                            + " earlier the start date!");
                     getUserData();
                 }
                 interval = view.getInterval() * 60;
@@ -55,11 +62,13 @@ public class ChangeTaskController implements Controller {
     }
 
     /**
-     * Create a new task
+     * Create a new task.
      */
     private void createTask() {
         logger.info("Create task is started");
-        if (title.isEmpty()) createTask();
+        if (title.isEmpty()) {
+            createTask();
+        }
         if (repeat) {
             task = new Task(title,
                     dateFromString(startTime),
@@ -76,11 +85,11 @@ public class ChangeTaskController implements Controller {
     }
 
     /**
-     * Edit exist task
+     * Edit exist task.
      *
      * @param task for edit
      */
-    private void editTask(Task task) {
+    private void editTask(final Task task) {
         logger.info("Start editing task");
         logger.info("Task before edit: {}", task.toString());
         title = title.isEmpty() ? task.getTitle() : title;
@@ -101,18 +110,18 @@ public class ChangeTaskController implements Controller {
         task.setRepeated(repeat);
         task.setActive(active);
         model.setChanged(true);
-        logger.info("Task after edit: {}", task.toString());
-        logger.info("End editing task.");
+        logger.info("Task after edit: {}", task);
+        logger.info("Finish editing task.");
     }
 
     @Override
     public void start() {
         getUserData();
         if (task == null) {
-            logger.info("Create task called");
+            logger.info("Create task is called");
             createTask();
         } else {
-            logger.info("Edit task called");
+            logger.info("Edit task is called");
             editTask(task);
         }
         int userChoice = view.show(task.toString());

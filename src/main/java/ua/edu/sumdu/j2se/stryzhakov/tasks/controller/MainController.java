@@ -2,16 +2,20 @@ package ua.edu.sumdu.j2se.stryzhakov.tasks.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.edu.sumdu.j2se.stryzhakov.tasks.Main;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Model;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.view.Viewable;
 
+/**
+ * This class starts when app is started.
+ * Depending on user choice set action for factory.
+ */
 public class MainController implements Controller {
-    private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+    private static final Logger logger = LoggerFactory
+            .getLogger(MainController.class);
     private final Viewable view;
-    private Model model;
+    private final Model model;
 
-    public MainController(Viewable view, Model model) {
+    public MainController(final Viewable view, final Model model) {
         this.view = view;
         this.model = model;
         logger.info("Start Main Controller");
@@ -32,10 +36,10 @@ public class MainController implements Controller {
                 action = Action.CALENDAR;
                 break;
             case 4:
-               if (model.isChanged()) {
+                if (model.isChanged()) {
                     action = Action.SAVE;
                 } else {
-                   logger.info("Exit");
+                    logger.info("Exit");
                     System.exit(0);
                 }
                 break;

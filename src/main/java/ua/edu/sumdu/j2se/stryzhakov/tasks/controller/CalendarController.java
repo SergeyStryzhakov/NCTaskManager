@@ -14,30 +14,35 @@ import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import java.util.SortedMap;
 
+/**
+ * This class create calendar for user date from model and push to view.
+ */
 public class CalendarController implements Controller {
-    private static final Logger logger = LoggerFactory.getLogger(CalendarController.class);
+    private static final Logger logger = LoggerFactory
+            .getLogger(CalendarController.class);
     private final CalendarView view;
     private final Model model;
 
 
-    public CalendarController(Viewable view, Model model) {
+    public CalendarController(final Viewable view, final Model model) {
         this.view = (CalendarView) view;
         this.model = model;
         logger.info("Start CalendarController");
     }
 
     /**
-     * Get calendar with particular date
+     * Get calendar with particular date.
      *
      * @param dateFrom Begin date
      * @param dateTo   finish date
      * @return Calendar as string for show in view
      */
-    private String getCalendar(LocalDateTime dateFrom, LocalDateTime dateTo) {
+    private String getCalendar(final LocalDateTime dateFrom, final LocalDateTime dateTo) {
         logger.info("GetCalendar is called");
         AbstractTaskList list;
         SortedMap<LocalDateTime, Set<Task>> calendar;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern("dd-MM-yyyy HH:mm");
         StringBuilder builder = new StringBuilder();
 
         list = model.getList();
@@ -59,7 +64,8 @@ public class CalendarController implements Controller {
                         .append("\n");
             }
         }
-        logger.info("Calendar is created successful, size is {}", calendar.keySet().size());
+        logger.info("Calendar is created successful, size is {}",
+                calendar.keySet().size());
         return builder.toString();
     }
 
@@ -87,7 +93,8 @@ public class CalendarController implements Controller {
                 dateFrom = dateFromString(view.getDate("start"));
                 dateTo = dateFromString(view.getDate("end"));
                 if (dateTo.isBefore(dateFrom)) {
-                    System.out.println("The end date is earlier then the start date. Try again!");
+                    System.out.println("The end date is earlier"
+                            + " then the start date. Try again!");
                     start();
                 }
                 view.setMaxUserChoice(2);

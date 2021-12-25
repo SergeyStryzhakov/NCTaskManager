@@ -7,8 +7,15 @@ public interface Controller {
 
     void start();
 
+    /**
+     * Return LocalDateTime object from string.
+     *
+     * @param data String for convert
+     * @return LocalDateTime object
+     */
     default LocalDateTime dateFromString(String data) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime tempDate;
         tempDate = LocalDateTime.parse(data, formatter);
         return tempDate;

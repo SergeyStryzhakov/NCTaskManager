@@ -6,9 +6,13 @@ import org.slf4j.LoggerFactory;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * View for ChangeTaskController.
+ */
 public class ChangeTaskView implements Viewable {
     private final Scanner scanner = new Scanner(System.in);
-    private static final Logger logger = LoggerFactory.getLogger(ChangeTaskView.class);
+    private static final Logger logger = LoggerFactory
+            .getLogger(ChangeTaskView.class);
 
     public String getTitle() {
         System.out.println("Enter a title");
@@ -23,7 +27,9 @@ public class ChangeTaskView implements Viewable {
             System.out.println("Is the task repeat?\n1. Yes\n2. No");
             String temp = scanner.nextLine();
             logger.info("User choice of repeat is {}", temp);
-            if (temp.isEmpty()) throw new InputMismatchException();
+            if (temp.isEmpty()) {
+                throw new InputMismatchException();
+            }
             if (temp.equals("1")) {
                 repeat = true;
             }
@@ -36,10 +42,13 @@ public class ChangeTaskView implements Viewable {
         return repeat;
     }
 
-    public String getTimeTask(String data) {
-        System.out.println("Task " + data + " Date and Time: (yyyy-MM-dd HH:mm)");
+    public String getTimeTask(final String data) {
+        System.out.println("Task " + data
+                + " Date and Time: (yyyy-MM-dd HH:mm)");
         String time = scanner.nextLine();
-        if (time.isEmpty()) getTimeTask(data);
+        if (time.isEmpty()) {
+            getTimeTask(data);
+        }
         logger.info("Time for {} is {}", data, time);
         return time;
     }
@@ -65,7 +74,9 @@ public class ChangeTaskView implements Viewable {
             System.out.println("Is the task active?\n1. Yes\n2. No");
             String temp = scanner.nextLine();
             logger.info("User choice of active is {}", temp);
-            if (temp.isEmpty()) throw new InputMismatchException();
+            if (temp.isEmpty()) {
+                throw new InputMismatchException();
+            }
             if (temp.equals("1")) {
                 active = true;
             }
@@ -79,14 +90,16 @@ public class ChangeTaskView implements Viewable {
     }
 
     @Override
-    public int show(String text) {
+    public int show(final String text) {
         int userChoice = 0;
         System.out.println(text);
         System.out.println("Save this task?\n1. Yes\n2. No ");
         try {
             userChoice = Integer.parseInt(scanner.nextLine());
             logger.info("User choice is {} ", userChoice);
-            if (userChoice < 1 || userChoice > 2) throw new InputMismatchException();
+            if (userChoice < 1 || userChoice > 2) {
+                throw new InputMismatchException();
+            }
         } catch (NumberFormatException | InputMismatchException e) {
             logger.error(e.getMessage());
             System.out.println("Please, enter a correct number!");
