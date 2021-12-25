@@ -83,6 +83,8 @@ public class CalendarController implements Controller {
                 userChoice = view.show(getCalendar(dateFrom, dateTo));
                 if (userChoice == 2 && model.isChanged()) {
                     action = Action.SAVE;
+                } else if (userChoice == 1) {
+                    action = Action.MAIN;
                 } else {
                     logger.info("Exit without saving");
                     System.exit(0);
