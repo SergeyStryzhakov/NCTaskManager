@@ -1,11 +1,15 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task implements Cloneable, Serializable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Task.class);
     private String title;
     private LocalDateTime time;
     private LocalDateTime start;
@@ -31,6 +35,7 @@ public class Task implements Cloneable, Serializable {
             throw new IllegalArgumentException("The title and the "
                     + "time cannot be empty");
         }
+        LOGGER.info("Single task was created");
         this.title = title;
         this.time = time;
     }
@@ -53,6 +58,7 @@ public class Task implements Cloneable, Serializable {
                     "The title cannot be empty and " +
                             "the interval cannot be a negative");
         }
+        LOGGER.info("Repeat task was created");
         this.title = title;
         this.start = start;
         this.end = end;

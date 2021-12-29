@@ -261,5 +261,24 @@
     "interval": 0,
     "active": true,
     "repeated": false
+  },
+  {
+    "title": "TODAY",
+    "time": {
+      "date": {
+        "year": 2021,
+        "month": 12,
+        "day": 29
+      },
+      "time": {
+        "hour": 22,
+        "minute": 0,
+        "second": 0,
+        "nano": 0
+      }
+    },
+    "interval": 0,
+    "active": true,
+    "repeated": false
   }
 ]

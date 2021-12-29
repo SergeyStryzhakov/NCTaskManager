@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * from ChangeTaskView
  */
 public class ChangeTaskController implements Controller {
-    private static final Logger logger = LoggerFactory
+    private static final Logger LOGGER = LoggerFactory
             .getLogger(ChangeTaskController.class);
     private final Model model;
     private final ChangeTaskView view;
@@ -31,7 +31,7 @@ public class ChangeTaskController implements Controller {
         this.view = (ChangeTaskView) view;
         this.model = model;
         this.task = model.getCurrentTask();
-        logger.info("Start ChangeTaskController");
+        LOGGER.info("Start ChangeTaskController");
     }
 
     /**
@@ -47,16 +47,16 @@ public class ChangeTaskController implements Controller {
                 endTime = view.getTimeTask("end");
                 if (dateFromString(endTime)
                         .isBefore(dateFromString(startTime))) {
-                    logger.error("Date {} > date {}", endTime, startTime);
-                    System.out.println("The end date cannot be"
+                    LOGGER.error("Date {} > date {}", endTime, startTime);
+                    LOGGER.error("The end date cannot be"
                             + " earlier the start date!");
                     getUserData();
                 }
                 interval = view.getInterval() * 60;
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
-            System.out.println("Invalid date, try again by pattern");
+            LOGGER.error(e.getMessage());
+            LOGGER.error("Invalid date, try again by pattern");
             getUserData();
         }
     }
@@ -65,7 +65,7 @@ public class ChangeTaskController implements Controller {
      * Create a new task.
      */
     private void createTask() {
-        logger.info("Create task is started");
+        LOGGER.info("Create task is started");
         if (title.isEmpty()) {
             createTask();
         }
@@ -80,8 +80,8 @@ public class ChangeTaskController implements Controller {
         task.setRepeated(repeat);
         task.setActive(active);
         model.setChanged(true);
-        logger.info("Task created: {}", task.toString());
-        logger.info("Create task is ended");
+        LOGGER.info("Task created: {}", task.toString());
+        LOGGER.info("Creating task is finished");
     }
 
     /**
@@ -90,8 +90,8 @@ public class ChangeTaskController implements Controller {
      * @param task for edit
      */
     private void editTask(final Task task) {
-        logger.info("Start editing task");
-        logger.info("Task before edit: {}", task.toString());
+        LOGGER.info("Start editing task");
+        LOGGER.info("Task before edit: {}", task.toString());
         title = title.isEmpty() ? task.getTitle() : title;
         task.setTitle(title);
         LocalDateTime start = startTime.isEmpty()
@@ -110,18 +110,17 @@ public class ChangeTaskController implements Controller {
         task.setRepeated(repeat);
         task.setActive(active);
         model.setChanged(true);
-        logger.info("Task after edit: {}", task);
-        logger.info("Finish editing task.");
+        LOGGER.info("Task after edit: {}", task);
+        LOGGER.info("Finish editing task.");
     }
 
     @Override
     public void start() {
         getUserData();
         if (task == null) {
-            logger.info("Create task is called");
             createTask();
         } else {
-            logger.info("Edit task is called");
+
             editTask(task);
         }
         int userChoice = view.show(task.toString());
@@ -129,7 +128,7 @@ public class ChangeTaskController implements Controller {
             case 1:
                 if (model.getCurrentTask() == null) {
                     model.getList().add(task);
-                    logger.info("Add new task to list");
+                    LOGGER.info("Add new task to list");
                 }
                 model.setCurrentTask(null);
             case 2:

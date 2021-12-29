@@ -11,7 +11,7 @@ import ua.edu.sumdu.j2se.stryzhakov.tasks.view.Viewable;
  * Show tasks controller. Can show all tasks or single one.
  */
 public class ShowController implements Controller {
-    private static final Logger logger = LoggerFactory
+    private static final Logger LOGGER = LoggerFactory
             .getLogger(ShowController.class);
     private final Viewable view;
     private final Model model;
@@ -25,7 +25,7 @@ public class ShowController implements Controller {
     public ShowController(final Viewable view, final Model model) {
         this.view = view;
         this.model = model;
-        logger.info("Start show controller");
+        LOGGER.info("Start show controller");
     }
 
     /**
@@ -34,7 +34,7 @@ public class ShowController implements Controller {
     private void getTasks() {
         taskList = model.getList();
         sizeList = taskList.size();
-        logger.info("Task list have got.");
+        LOGGER.info("Task list have got.");
     }
 
     /**
@@ -46,7 +46,7 @@ public class ShowController implements Controller {
         getTasks();
         mainMenu = sizeList;
         exit = sizeList + 1;
-        logger.info("Main menu number is {}, exit number is {}",
+        LOGGER.info("Main menu number is {}, exit number is {}",
                 mainMenu, exit);
         StringBuilder builder = new StringBuilder();
         if (sizeList == 0) {
@@ -64,7 +64,7 @@ public class ShowController implements Controller {
                 .append("\n")
                 .append(exit)
                 .append(". Exit");
-        logger.info("String builder created successful");
+        LOGGER.info("String builder created successful");
         return builder.toString();
     }
 
@@ -75,7 +75,7 @@ public class ShowController implements Controller {
      * @return Selected task as string for change or remove
      */
     private String selectTask(final int index) {
-        logger.info("Selected tas index is {}", index);
+        LOGGER.info("Selected tas index is {}", index);
         task = taskList.getTask(index);
         return task.toString()
                 + "\n1. Edit task\n2. Delete task\n";
@@ -91,7 +91,7 @@ public class ShowController implements Controller {
         Action action = Action.MAIN;
         int userChoice = view.show(createListAllTasks());
         if (userChoice < 0 || userChoice > sizeList + 1) {
-            logger.error("Incorrect user choice, selected {}",
+            LOGGER.error("Incorrect user choice, selected {}",
                     userChoice);
             System.out.println("Enter a correct number");
             this.start();
@@ -102,7 +102,7 @@ public class ShowController implements Controller {
             if (model.isChanged()) {
                 action = Action.SAVE;
             } else {
-                logger.info("Exit without saving");
+                LOGGER.info("Exit without saving");
                 System.exit(0);
             }
         } else {

@@ -8,10 +8,10 @@ import ua.edu.sumdu.j2se.stryzhakov.tasks.controller.ControllerFactory;
 
 
 public class Main {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
-        logger.info("Start app");
+        LOGGER.info("Start app");
         Controller startController = ControllerFactory.selectController(Action.MAIN);
         startController.start();
     }

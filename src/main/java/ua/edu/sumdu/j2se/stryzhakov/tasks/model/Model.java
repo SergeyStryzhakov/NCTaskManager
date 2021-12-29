@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 
 public class Model {
-    private static final Logger logger = LoggerFactory.getLogger(Model.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Model.class);
     private final String db = "tasks.json";
     private AbstractTaskList list = TaskListFactory.createTaskList(ListTypes.types.ARRAY);
     private Task currentTask;
@@ -15,14 +15,14 @@ public class Model {
 
 
     private Model() {
-        logger.info("Model is created");
+        LOGGER.info("Model is created");
         getData();
     }
 
     private void getData() {
         File file = new File(db);
         TaskIO.readText(list, file);
-        logger.info("Data read from file {} successful", db);
+        LOGGER.info("Data read from file {} successful", db);
     }
 
     public boolean isChanged() {
@@ -35,7 +35,7 @@ public class Model {
 
     public void save(AbstractTaskList list) {
         TaskIO.writeText(list, new File(db));
-        logger.info(" Saving in file {} successful", db);
+        LOGGER.info(" Saving in file {} successful", db);
     }
 
     public static Model getInstance() {
@@ -51,7 +51,7 @@ public class Model {
 
     public void setCurrentTask(Task currentTask) {
         this.currentTask = currentTask;
-        logger.info("Current task is set");
+        LOGGER.info("Current task is set");
     }
 
     public AbstractTaskList getList() {

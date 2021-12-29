@@ -9,7 +9,7 @@ import java.util.Scanner;
  * View for Show Controller.
  */
 public class ShowView implements Viewable {
-    private static final Logger logger = LoggerFactory
+    private static final Logger LOGGER = LoggerFactory
             .getLogger(ShowView.class);
 
     @Override
@@ -22,9 +22,9 @@ public class ShowView implements Viewable {
         System.out.println(text);
         try {
             userChoice = Integer.parseInt(scanner.nextLine());
-            logger.info("User select item {}", userChoice);
+            LOGGER.info("User select item {}", userChoice);
         } catch (NumberFormatException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             System.out.println("Please, enter a correct number!");
             this.show(text);
         }

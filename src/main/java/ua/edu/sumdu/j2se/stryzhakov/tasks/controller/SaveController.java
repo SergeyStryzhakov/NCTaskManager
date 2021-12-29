@@ -9,7 +9,7 @@ import ua.edu.sumdu.j2se.stryzhakov.tasks.view.Viewable;
  * Check changes in task list and save it.
  */
 public class SaveController implements Controller {
-    private static final Logger logger = LoggerFactory
+    private static final Logger LOGGER = LoggerFactory
             .getLogger(SaveController.class);
     private final Viewable view;
     private final Model model;
@@ -17,7 +17,7 @@ public class SaveController implements Controller {
     public SaveController(final Viewable view, final Model model) {
         this.view = view;
         this.model = model;
-        logger.info("Start save controller");
+        LOGGER.info("Start save controller");
     }
 
     @Override
@@ -31,10 +31,10 @@ public class SaveController implements Controller {
                 break;
             case 2:
                 model.save(model.getList());
-                logger.info("Exit with saving");
+                LOGGER.info("Exit with saving");
                 System.exit(0);
             case 3:
-                logger.info("Exit without saving");
+                LOGGER.info("Exit without saving");
                 System.exit(0);
         }
     }

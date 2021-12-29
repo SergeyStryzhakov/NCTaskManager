@@ -18,7 +18,7 @@ import java.util.SortedMap;
  * This class create calendar for user date from model and push to view.
  */
 public class CalendarController implements Controller {
-    private static final Logger logger = LoggerFactory
+    private static final Logger LOGGER = LoggerFactory
             .getLogger(CalendarController.class);
     private final CalendarView view;
     private final Model model;
@@ -27,7 +27,7 @@ public class CalendarController implements Controller {
     public CalendarController(final Viewable view, final Model model) {
         this.view = (CalendarView) view;
         this.model = model;
-        logger.info("Start CalendarController");
+        LOGGER.info("Start CalendarController");
     }
 
     /**
@@ -38,7 +38,7 @@ public class CalendarController implements Controller {
      * @return Calendar as string for show in view
      */
     private String getCalendar(final LocalDateTime dateFrom, final LocalDateTime dateTo) {
-        logger.info("GetCalendar is called");
+        LOGGER.info("GetCalendar is called");
         AbstractTaskList list;
         SortedMap<LocalDateTime, Set<Task>> calendar;
         DateTimeFormatter formatter = DateTimeFormatter
@@ -47,13 +47,13 @@ public class CalendarController implements Controller {
 
         list = model.getList();
         calendar = Tasks.calendar(list, dateFrom, dateTo);
-        logger.info("Create header of calendar");
+        LOGGER.info("Create header of calendar");
         System.out.println("---------------Calendar of tasks from "
                 + dateFrom.format(formatter)
                 + " to "
                 + dateTo.format(formatter) + "---------------");
         if (calendar.isEmpty()) {
-            logger.info("Calendar is empty");
+            LOGGER.info("Calendar is empty");
             builder.append("Unfortunately, no task for selected dates.");
         }
         for (LocalDateTime dateTime : calendar.keySet()) {
@@ -64,7 +64,7 @@ public class CalendarController implements Controller {
                         .append("\n");
             }
         }
-        logger.info("Calendar is created successful, size is {}",
+        LOGGER.info("Calendar is created successful, size is {}",
                 calendar.keySet().size());
         return builder.toString();
     }
@@ -78,7 +78,7 @@ public class CalendarController implements Controller {
         userChoice = view.show("");
         switch (userChoice) {
             case 1:
-                logger.info("Calendar for a week");
+                LOGGER.info("Calendar for a week");
                 view.setMaxUserChoice(2);
                 userChoice = view.show(getCalendar(dateFrom, dateTo));
                 if (userChoice == 2 && model.isChanged()) {
@@ -86,12 +86,12 @@ public class CalendarController implements Controller {
                 } else if (userChoice == 1) {
                     action = Action.MAIN;
                 } else {
-                    logger.info("Exit without saving");
+                    LOGGER.info("Exit without saving");
                     System.exit(0);
                 }
                 break;
             case 2:
-                logger.info("Calendar for user date");
+                LOGGER.info("Calendar for user date");
                 dateFrom = dateFromString(view.getDate("start"));
                 dateTo = dateFromString(view.getDate("end"));
                 if (dateTo.isBefore(dateFrom)) {
@@ -106,7 +106,7 @@ public class CalendarController implements Controller {
                 } else if (userChoice == 1) {
                     action = Action.MAIN;
                 } else {
-                    logger.info("Exit without saving");
+                    LOGGER.info("Exit without saving");
                     System.exit(0);
                 }
                 break;
@@ -117,7 +117,7 @@ public class CalendarController implements Controller {
                 if (model.isChanged()) {
                     action = Action.SAVE;
                 } else {
-                    logger.info("Exit without saving");
+                    LOGGER.info("Exit without saving");
                     System.exit(0);
                 }
         }

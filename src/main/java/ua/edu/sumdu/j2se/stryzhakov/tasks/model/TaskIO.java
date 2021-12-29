@@ -3,6 +3,8 @@ package ua.edu.sumdu.j2se.stryzhakov.tasks.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -27,6 +29,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class TaskIO {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskIO.class);
+
     /**
      * Write list to stream. LocalDateTime makes long.
      *
@@ -62,7 +66,7 @@ public class TaskIO {
             }
             outputStream.flush();
         } catch (IOException e) {
-            System.out.println("Cannot write to stream");
+            LOGGER.error("Cannot write to stream");
         }
     }
 
@@ -81,7 +85,7 @@ public class TaskIO {
             writer.write(gson.toJson(tempList));
             writer.flush();
         } catch (IOException e) {
-            System.out.println("Cannot write to JSON stream");
+            LOGGER.error("Cannot write to JSON stream");
         }
     }
 
@@ -119,7 +123,7 @@ public class TaskIO {
                 tasks.add(task);
             }
         } catch (IOException e) {
-            System.out.println("Cannot read from stream");
+            LOGGER.error("Cannot read from stream");
         }
     }
 
@@ -130,7 +134,8 @@ public class TaskIO {
      * @param in    JSON stream
      */
     public static void read(AbstractTaskList tasks, Reader in) {
-        Type typeTask = new TypeToken<List<Task>>() {}.getType();
+        Type typeTask = new TypeToken<List<Task>>() {
+        }.getType();
         List<Task> tempList = new Gson().fromJson(in, typeTask);
         tempList.stream().filter(Objects::nonNull).forEach(tasks::add);
 
@@ -143,15 +148,17 @@ public class TaskIO {
      * @param file  Destination file
      */
     public static void writeBinary(AbstractTaskList tasks, File file) {
+        LOGGER.info("Writing to binary file is started");
         if (!file.exists()) {
             file = new File(file.getName());
         }
         try (FileOutputStream fos = new FileOutputStream(file)) {
             write(tasks, fos);
         } catch (IOException e) {
-            System.out.println("Cannot write to file "
+            LOGGER.error("Cannot write to file "
                     + file.getName());
         }
+        LOGGER.info("Writing to binary file is finished");
     }
 
     /**
@@ -161,15 +168,17 @@ public class TaskIO {
      * @param file  Destination file
      */
     public static void writeText(AbstractTaskList tasks, File file) {
+        LOGGER.info("Writing to JSON file is started");
         if (!file.exists()) {
             file = new File(file.getName());
         }
         try (Writer fw = new FileWriter(file)) {
             write(tasks, fw);
         } catch (IOException e) {
-            System.out.println("Cannot write to JSON file "
+            LOGGER.error("Cannot write to JSON file "
                     + file.getName());
         }
+        LOGGER.info("Writing to JSON file is finished");
     }
 
     /**
@@ -179,15 +188,17 @@ public class TaskIO {
      * @param file  Source file
      */
     public static void readBinary(AbstractTaskList tasks, File file) {
+        LOGGER.info("Reading from binary file is started");
         try (FileInputStream fis = new FileInputStream(file)) {
             read(tasks, fis);
         } catch (FileNotFoundException e) {
-            System.out.println("File " + file.getName()
+            LOGGER.error("File " + file.getName()
                     + " not found");
         } catch (IOException e) {
-            System.out.println("Cannot read from file "
+            LOGGER.error("Cannot read from file "
                     + file.getName());
         }
+        LOGGER.info("Reading from binary file is finished");
     }
 
     /**
@@ -197,15 +208,18 @@ public class TaskIO {
      * @param file  Source file
      */
     public static void readText(AbstractTaskList tasks, File file) {
+        LOGGER.info("Reading from JSON file is started");
         try (FileReader fr = new FileReader(file)) {
             read(tasks, fr);
+
         } catch (FileNotFoundException e) {
-            System.out.println("File " + file.getName()
+            LOGGER.error("File " + file.getName()
                     + " not found");
         } catch (IOException e) {
-            System.out.println("Cannot read from JSON file "
+            LOGGER.error("Cannot read from JSON file "
                     + file.getName());
         }
+        LOGGER.info("Reading from JSON file is finished");
     }
 
 }

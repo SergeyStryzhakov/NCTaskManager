@@ -1,11 +1,15 @@
 package ua.edu.sumdu.j2se.stryzhakov.tasks.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Arrays;
 import java.util.Iterator;
 
 import java.util.stream.Stream;
 
 public class LinkedTaskList extends AbstractTaskList implements Cloneable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LinkedTaskList.class);
     private Element head;
 
     /**
@@ -34,6 +38,7 @@ public class LinkedTaskList extends AbstractTaskList implements Cloneable {
         if (task == null) {
             throw new NullPointerException("The task cannot be null");
         }
+        LOGGER.info("Add new task");
         Element newElement = new Element(task);
         if (head != null) {
             newElement.next = head;
@@ -55,6 +60,7 @@ public class LinkedTaskList extends AbstractTaskList implements Cloneable {
         if (task == null) {
             throw new NullPointerException("The task cannot be null");
         }
+        LOGGER.info("Remove task");
         Element currentElement = head;
         Element previousElement = null;
         while (currentElement != null) {
@@ -106,6 +112,7 @@ public class LinkedTaskList extends AbstractTaskList implements Cloneable {
         if (head == null) {
             throw new IllegalArgumentException("List is empty.");
         }
+        LOGGER.info("Get task from list with index " + index);
         Element currentElement = head;
         int countElement = 0;
 
@@ -145,6 +152,7 @@ public class LinkedTaskList extends AbstractTaskList implements Cloneable {
 
     @Override
     public Iterator<Task> iterator() {
+        LOGGER.info("Create new iterator");
         return new LinkedListIterator(this);
     }
 
@@ -184,6 +192,7 @@ public class LinkedTaskList extends AbstractTaskList implements Cloneable {
 
     @Override
     public LinkedTaskList clone() throws CloneNotSupportedException {
+        LOGGER.info("Clone list");
         LinkedTaskList list = (LinkedTaskList) super.clone();
         list.head = null;
         for (int i = this.size() - 1; i >= 0; i--) {

@@ -10,7 +10,7 @@ import ua.edu.sumdu.j2se.stryzhakov.tasks.view.Viewable;
  * Depending on user choice set action for factory.
  */
 public class MainController implements Controller {
-    private static final Logger logger = LoggerFactory
+    private static final Logger LOGGER = LoggerFactory
             .getLogger(MainController.class);
     private final Viewable view;
     private final Model model;
@@ -18,7 +18,7 @@ public class MainController implements Controller {
     public MainController(final Viewable view, final Model model) {
         this.view = view;
         this.model = model;
-        logger.info("Start Main Controller");
+        LOGGER.info("Start Main Controller");
     }
 
     @Override
@@ -39,7 +39,7 @@ public class MainController implements Controller {
                 if (model.isChanged()) {
                     action = Action.SAVE;
                 } else {
-                    logger.info("Exit");
+                    LOGGER.info("Exit");
                     System.exit(0);
                 }
                 break;

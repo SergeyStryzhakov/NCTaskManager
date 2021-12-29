@@ -10,7 +10,7 @@ import java.util.Scanner;
  * View for MainController, start screen.
  */
 public class MainView implements Viewable {
-    private static final Logger logger = LoggerFactory
+    private static final Logger LOGGER = LoggerFactory
             .getLogger(MainView.class);
 
     @Override
@@ -28,12 +28,12 @@ public class MainView implements Viewable {
 
         try {
             userChoice = Integer.parseInt(scanner.nextLine());
-            logger.info("User choice is {}", userChoice);
+            LOGGER.info("User choice is {}", userChoice);
             if (userChoice < 1 || userChoice > 4) {
                 throw new InputMismatchException();
             }
         } catch (NumberFormatException | InputMismatchException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             System.out.println("Please, enter a correct number!");
             this.show(text);
         }

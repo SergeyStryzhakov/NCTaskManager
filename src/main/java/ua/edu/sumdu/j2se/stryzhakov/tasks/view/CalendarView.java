@@ -10,7 +10,7 @@ import java.util.Scanner;
  * View for CalendarController.
  */
 public class CalendarView implements Viewable {
-    private static final Logger logger = LoggerFactory
+    private static final Logger LOGGER = LoggerFactory
             .getLogger(CalendarView.class);
     private final Scanner scanner = new Scanner(System.in);
     private int maxUserChoice;
@@ -23,7 +23,7 @@ public class CalendarView implements Viewable {
         System.out.println("Enter date of " + period
                 + " calendar in format (yyyy-MM-dd HH:mm)");
         String temp = scanner.nextLine();
-        logger.info("User data for {} is {} ", period, temp);
+        LOGGER.info("User data for {} is {} ", period, temp);
         return temp;
     }
 
@@ -46,12 +46,12 @@ public class CalendarView implements Viewable {
         }
         try {
             userChoice = Integer.parseInt(scanner.nextLine());
-            logger.info("User choice is {} ", userChoice);
+            LOGGER.info("User choice is {} ", userChoice);
             if (userChoice < 1 || userChoice > maxUserChoice) {
                 throw new InputMismatchException();
             }
         } catch (NumberFormatException | InputMismatchException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             System.out.println("Please, enter a correct number!");
             this.show(text);
         }
