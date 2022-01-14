@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Model;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Task;
+import ua.edu.sumdu.j2se.stryzhakov.tasks.utils.Utils;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.view.ChangeTaskView;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.view.Viewable;
 
@@ -43,12 +44,18 @@ public class ChangeTaskController implements Controller {
             repeat = view.isTaskRepeat();
             active = view.isTaskActive();
             startTime = view.getTimeTask("start");
+            String patternDate = "\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}";
+            if (!startTime.matches(patternDate))
+                throw new Exception();
             if (repeat) {
                 endTime = view.getTimeTask("end");
-                if (dateFromString(endTime)
-                        .isBefore(dateFromString(startTime))) {
+                if (!endTime.matches(patternDate)) throw new Exception();
+                if (Utils.dateFromString(endTime)
+                        .isBefore(Utils.dateFromString(startTime))) {
                     LOGGER.error("Date {} > date {}", endTime, startTime);
                     LOGGER.error("The end date cannot be"
+                            + " earlier the start date!");
+                    System.out.println("The end date cannot be"
                             + " earlier the start date!");
                     getUserData();
                 }
@@ -57,6 +64,7 @@ public class ChangeTaskController implements Controller {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             LOGGER.error("Invalid date, try again by pattern");
+            System.out.println("Invalid date, try again by pattern");
             getUserData();
         }
     }
@@ -67,15 +75,15 @@ public class ChangeTaskController implements Controller {
     private void createTask() {
         LOGGER.info("Create task is started");
         if (title.isEmpty()) {
-            createTask();
+            title = "New task";
         }
         if (repeat) {
             task = new Task(title,
-                    dateFromString(startTime),
-                    dateFromString(endTime),
+                    Utils.dateFromString(startTime),
+                    Utils.dateFromString(endTime),
                     interval);
         } else {
-            task = new Task(title, dateFromString(startTime));
+            task = new Task(title, Utils.dateFromString(startTime));
         }
         task.setRepeated(repeat);
         task.setActive(active);
@@ -96,12 +104,12 @@ public class ChangeTaskController implements Controller {
         task.setTitle(title);
         LocalDateTime start = startTime.isEmpty()
                 ? task.getStartTime()
-                : dateFromString(startTime);
+                : Utils.dateFromString(startTime);
         if (repeat) {
 
             LocalDateTime end = endTime.isEmpty()
                     ? task.getStartTime()
-                    : dateFromString(endTime);
+                    : Utils.dateFromString(endTime);
             task.setTime(start, end, interval);
 
         } else {
@@ -120,7 +128,6 @@ public class ChangeTaskController implements Controller {
         if (task == null) {
             createTask();
         } else {
-
             editTask(task);
         }
         int userChoice = view.show(task.toString());

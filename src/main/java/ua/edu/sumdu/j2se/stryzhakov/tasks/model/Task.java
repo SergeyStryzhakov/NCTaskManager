@@ -212,15 +212,15 @@ public class Task implements Cloneable, Serializable {
     public String toString() {
         String msg;
         if (!repeated) {
-            msg = "Задача: " + title +
-                    " Початок " + stringFromDate(time) +
-                    " Активна: " + active;
+            msg = "Task: " + title +
+                    " Start at " + stringFromDate(time) +
+                    " Active: " + active;
         } else {
-            msg = "Задача: " + title +
-                    " Початок " + stringFromDate(start) +
-                    " з інтервалом " + interval / 60 +
-                    " хв. закінчення " + stringFromDate(end) +
-                    ". Активна: " + active;
+            msg = "Task: " + title +
+                    " Start at " + stringFromDate(start) +
+                    " with interval " + interval / 60 +
+                    " min. and finish at " + stringFromDate(end) +
+                    ". Active: " + active;
         }
         return msg;
     }

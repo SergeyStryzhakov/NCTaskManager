@@ -6,6 +6,7 @@ import ua.edu.sumdu.j2se.stryzhakov.tasks.model.AbstractTaskList;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Model;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Task;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.model.Tasks;
+import ua.edu.sumdu.j2se.stryzhakov.tasks.utils.Utils;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.view.CalendarView;
 import ua.edu.sumdu.j2se.stryzhakov.tasks.view.Viewable;
 
@@ -76,6 +77,7 @@ public class CalendarController implements Controller {
         int userChoice;
         Action action = Action.MAIN;
         userChoice = view.show("");
+        String patternDate = "\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}";
         switch (userChoice) {
             case 1:
                 LOGGER.info("Calendar for a week");
@@ -92,8 +94,18 @@ public class CalendarController implements Controller {
                 break;
             case 2:
                 LOGGER.info("Calendar for user date");
-                dateFrom = dateFromString(view.getDate("start"));
-                dateTo = dateFromString(view.getDate("end"));
+                String startDate = view.getDate("start");
+                while (!startDate.matches(patternDate)){
+                    System.out.println("Invalid date, try again by pattern");
+                    startDate = view.getDate("start");
+                }
+                dateFrom = Utils.dateFromString(startDate);
+                String endDate = view.getDate("start");
+                while (!endDate.matches(patternDate)){
+                    System.out.println("Invalid date, try again by pattern");
+                    endDate = view.getDate("end");
+                }
+                dateTo = Utils.dateFromString(endDate);
                 if (dateTo.isBefore(dateFrom)) {
                     System.out.println("The end date is earlier"
                             + " then the start date. Try again!");
