@@ -25,5 +25,11 @@ public class Utils {
 
         return tempDate;
     }
+
+    public static String stringFromDate(LocalDateTime date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        return date.format(formatter);
+
+    }
 }
 

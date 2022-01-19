@@ -36,6 +36,9 @@ public class MainController implements Controller {
                 action = Action.CALENDAR;
                 break;
             case 4:
+                action = Action.NOTIFICATOR;
+                break;
+            case 5:
                 if (model.isChanged()) {
                     action = Action.SAVE;
                 } else {

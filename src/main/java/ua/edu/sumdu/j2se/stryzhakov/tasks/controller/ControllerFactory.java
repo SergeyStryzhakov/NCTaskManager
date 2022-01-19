@@ -22,6 +22,9 @@ public class ControllerFactory {
             case SAVE:
                 return new SaveController(new SaveView(),
                         Model.getInstance());
+            case NOTIFICATOR:
+                return new NotificationController(new NotificationView(),
+                        Model.getInstance());
             default:
                 return new MainController(new MainView(),
                         Model.getInstance());

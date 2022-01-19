@@ -8,5 +8,6 @@ public enum Action {
     SHOW,
     CHANGE,
     SAVE,
-    CALENDAR
+    CALENDAR,
+    NOTIFICATOR
 }

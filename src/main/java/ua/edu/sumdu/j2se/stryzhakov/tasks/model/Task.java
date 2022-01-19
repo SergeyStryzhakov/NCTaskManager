@@ -2,6 +2,7 @@ package ua.edu.sumdu.j2se.stryzhakov.tasks.model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ua.edu.sumdu.j2se.stryzhakov.tasks.utils.Utils;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -30,7 +31,7 @@ public class Task implements Cloneable, Serializable {
      * @throws IllegalArgumentException if title equals null or time < 0
      */
     public Task(String title, LocalDateTime time)
-                throws IllegalArgumentException {
+            throws IllegalArgumentException {
         if (title.isEmpty() || time == null) {
             throw new IllegalArgumentException("The title and the "
                     + "time cannot be empty");
@@ -129,7 +130,7 @@ public class Task implements Cloneable, Serializable {
      * Create repeated task from non-repeated.
      */
     public void setTime(LocalDateTime start, LocalDateTime end, int interval)
-                                            throws IllegalArgumentException {
+            throws IllegalArgumentException {
         if (interval < 0 || start == null || end == null) {
             throw new IllegalArgumentException(
                     "Time cannot be a negative");
@@ -154,7 +155,7 @@ public class Task implements Cloneable, Serializable {
      * @throws IllegalArgumentException if current < 0
      */
     public LocalDateTime nextTimeAfter(LocalDateTime current)
-                            throws IllegalArgumentException {
+            throws IllegalArgumentException {
         if (current == null) {
             throw new IllegalArgumentException(
                     "Current time cannot be a negative");
@@ -213,23 +214,18 @@ public class Task implements Cloneable, Serializable {
         String msg;
         if (!repeated) {
             msg = "Task: " + title +
-                    " Start at " + stringFromDate(time) +
+                    " Start at " + Utils.stringFromDate(time) +
                     " Active: " + active;
         } else {
             msg = "Task: " + title +
-                    " Start at " + stringFromDate(start) +
+                    " Start at " + Utils.stringFromDate(start) +
                     " with interval " + interval / 60 +
-                    " min. and finish at " + stringFromDate(end) +
+                    " min. and finish at " + Utils.stringFromDate(end) +
                     ". Active: " + active;
         }
         return msg;
     }
 
-    private String stringFromDate(LocalDateTime date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-       return date.format(formatter);
-
-    }
 
     @Override
     public Task clone() throws CloneNotSupportedException {

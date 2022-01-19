@@ -97,12 +97,14 @@ public class CalendarController implements Controller {
                 String startDate = view.getDate("start");
                 while (!startDate.matches(patternDate)){
                     System.out.println("Invalid date, try again by pattern");
+                    LOGGER.info("User startDate is {}", startDate);
                     startDate = view.getDate("start");
                 }
                 dateFrom = Utils.dateFromString(startDate);
                 String endDate = view.getDate("start");
                 while (!endDate.matches(patternDate)){
                     System.out.println("Invalid date, try again by pattern");
+                    LOGGER.info("User endDate is {}", endDate);
                     endDate = view.getDate("end");
                 }
                 dateTo = Utils.dateFromString(endDate);
