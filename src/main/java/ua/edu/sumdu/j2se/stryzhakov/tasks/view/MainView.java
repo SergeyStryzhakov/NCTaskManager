@@ -24,13 +24,12 @@ public class MainView implements Viewable {
         System.out.println("2: Add new task");
         System.out.println("3: Show calendar "
                 + "(You must enter start and finish date)");
-        System.out.println("4: Start notificator");
-        System.out.println("5: Exit");
+        System.out.println("4: Exit");
 
         try {
             userChoice = Integer.parseInt(scanner.nextLine());
             LOGGER.info("User choice is {}", userChoice);
-            if (userChoice < 1 || userChoice > 5) {
+            if (userChoice < 1 || userChoice > 4) {
                 throw new InputMismatchException();
             }
         } catch (NumberFormatException | InputMismatchException e) {

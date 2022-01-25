@@ -4,11 +4,11 @@ public class NotificationView implements Viewable {
     @Override
     public int show(String text) {
         System.out.println("***************"
-                + " NOTIFICATOR START "
+                + " NOTIFICATION START "
                 + "***************");
         System.out.println(text);
         System.out.println("***************"
-                + " NOTIFICATOR FINISH "
+                + " NOTIFICATION FINISH "
                 + "***************");
         return 0;
     }

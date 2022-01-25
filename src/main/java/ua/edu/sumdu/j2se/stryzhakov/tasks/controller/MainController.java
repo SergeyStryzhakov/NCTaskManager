@@ -23,6 +23,10 @@ public class MainController implements Controller {
 
     @Override
     public void start() {
+        if(!model.isNotificationStarted()){
+            ControllerFactory.selectController(Action.NOTIFICATOR).start();
+        }
+        LOGGER.info("Notification is already started");
         int userChoice = view.show("");
         Action action = Action.MAIN;
         switch (userChoice) {
@@ -36,9 +40,6 @@ public class MainController implements Controller {
                 action = Action.CALENDAR;
                 break;
             case 4:
-                action = Action.NOTIFICATOR;
-                break;
-            case 5:
                 if (model.isChanged()) {
                     action = Action.SAVE;
                 } else {

@@ -13,16 +13,16 @@ import java.time.temporal.ChronoUnit;
 
 public class NotificationController implements Controller {
     private static final int NOTIFICATION_TIME = 60; //in minutes
-    private static final int NOTIFICATION_CHECK_INTERVAL = 600000; //in ms
+    private static final int NOTIFICATION_CHECK_INTERVAL = 6000; //in ms
     private static final Logger LOGGER = LoggerFactory
             .getLogger(NotificationController.class);
     private final Viewable view;
-    private final Model instance;
+    private final Model model;
     private AbstractTaskList list;
 
-    public NotificationController(Viewable notificatorView, Model instance) {
+    public NotificationController(Viewable notificatorView, Model model) {
         this.view = notificatorView;
-        this.instance = instance;
+        this.model = model;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class NotificationController implements Controller {
         Thread thread = new Thread(createNotificator());
         thread.setDaemon(true);
         thread.start();
-        view.show("Notificator is on.");
+        model.setNotificationStarted(true);
         LOGGER.info("{} started.", thread.getName());
         ControllerFactory.selectController(Action.MAIN).start();
     }
@@ -48,9 +48,10 @@ public class NotificationController implements Controller {
                 try {
                     Thread.sleep(NOTIFICATION_CHECK_INTERVAL);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage());
+
                 }
-                list = instance.getList();
+                list = model.getList();
                 StringBuilder sb = new StringBuilder();
                 for (Task tempTask : list) {
                     LocalDateTime nextTime = tempTask.nextTimeAfter(

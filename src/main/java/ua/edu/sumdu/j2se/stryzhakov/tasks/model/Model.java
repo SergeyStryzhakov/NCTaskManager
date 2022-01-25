@@ -11,6 +11,7 @@ public class Model {
     private AbstractTaskList list = TaskListFactory.createTaskList(ListTypes.types.ARRAY);
     private Task currentTask;
     private boolean changed;
+    private boolean notificationStarted = false;
     private static Model instance;
 
 
@@ -23,6 +24,14 @@ public class Model {
         File file = new File(db);
         TaskIO.readText(list, file);
         LOGGER.info("Data read from file {} successful", db);
+    }
+
+    public boolean isNotificationStarted() {
+        return notificationStarted;
+    }
+
+    public void setNotificationStarted(boolean notificationStarted) {
+        this.notificationStarted = notificationStarted;
     }
 
     public boolean isChanged() {
