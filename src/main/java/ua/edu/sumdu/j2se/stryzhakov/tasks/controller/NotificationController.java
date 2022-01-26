@@ -13,7 +13,7 @@ import java.time.temporal.ChronoUnit;
 
 public class NotificationController implements Controller {
     private static final int NOTIFICATION_TIME = 60; //in minutes
-    private static final int NOTIFICATION_CHECK_INTERVAL = 6000; //in ms
+    private static final int NOTIFICATION_CHECK_INTERVAL = 600000; //in ms
     private static final Logger LOGGER = LoggerFactory
             .getLogger(NotificationController.class);
     private final Viewable view;
