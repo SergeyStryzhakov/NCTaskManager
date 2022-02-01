@@ -1,11 +1,11 @@
-package ua.edu.sumdu.j2se.stryzhakov.tasks;
+package ua.edu.sumdu.j2se.stryzhakov.tasks.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public abstract class AbstractTaskList implements Iterable<Task>, Cloneable, Serializable {
+public abstract class AbstractTaskList implements Iterable<Task>, Serializable {
 
     public abstract void add(Task task);
 
@@ -19,25 +19,24 @@ public abstract class AbstractTaskList implements Iterable<Task>, Cloneable, Ser
 
     public abstract Stream<Task> getStream();
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
 
     /**
-     * Create new list of tasks with specific condition
+     * Create new list of tasks with specific condition.
      *
      * @param start Start of time interval
      * @param end   End of time interval
      * @return List of the active tasks in specific time interval
      * @throws IllegalArgumentException if time less 0
      */
-    public final AbstractTaskList incoming(LocalDateTime start, LocalDateTime end) throws IllegalArgumentException {
+    public final AbstractTaskList incoming(LocalDateTime start,
+                                           LocalDateTime end)
+            throws IllegalArgumentException {
         if (start == null || end == null) {
             throw new IllegalArgumentException("Time cannot be negative");
         }
 
-        AbstractTaskList taskList = TaskListFactory.createTaskList(this.getType());
+        AbstractTaskList taskList =
+                TaskListFactory.createTaskList(this.getType());
 
         this.getStream().filter(Objects::nonNull)
                 .filter((t) -> (t.nextTimeAfter(start) != null &&
@@ -59,14 +58,23 @@ public abstract class AbstractTaskList implements Iterable<Task>, Cloneable, Ser
         return builder.toString();
     }
 
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         AbstractTaskList list = (AbstractTaskList) o;
-        if (this.size() != list.size()) return false;
+        if (this.size() != list.size()) {
+            return false;
+        }
         for (int i = 0; i < this.size(); i++) {
-            if (!this.getTask(i).equals(list.getTask(i))) return false;
+            if (!this.getTask(i).equals(list.getTask(i))) {
+                return false;
+            }
         }
         return true;
     }

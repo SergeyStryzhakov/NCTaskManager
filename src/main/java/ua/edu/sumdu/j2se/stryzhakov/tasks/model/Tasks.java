@@ -1,9 +1,13 @@
-package ua.edu.sumdu.j2se.stryzhakov.tasks;
+package ua.edu.sumdu.j2se.stryzhakov.tasks.model;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 public class Tasks {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Tasks.class);
     private final static SortedMap<LocalDateTime, Set<Task>> calendar = new TreeMap<>();
 
     /**
@@ -37,14 +41,14 @@ public class Tasks {
      * @return Sorted map of tasks
      */
     public static SortedMap<LocalDateTime, Set<Task>> calendar(Iterable<Task> tasks, LocalDateTime start, LocalDateTime end) {
-
+        LOGGER.info("Create calendar from " + start
+                + " to " + end);
         for (Task task : tasks) {
             LocalDateTime startTime = start;
             if (task == null || !task.isActive()) continue;
             if (task.isRepeated()) {
                 while (startTime.isBefore(end)) {
-                    //System.out.println(task.nextTimeAfter(startTime));
-                    if(task.nextTimeAfter(startTime) == null ) break;
+                    if (task.nextTimeAfter(startTime) == null) break;
                     addTaskToCalendar(task, task.nextTimeAfter(startTime));
                     startTime = startTime.plusSeconds(task.getRepeatInterval());
                 }

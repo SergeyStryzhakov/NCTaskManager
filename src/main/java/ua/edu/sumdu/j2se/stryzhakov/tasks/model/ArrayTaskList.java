@@ -1,15 +1,20 @@
-package ua.edu.sumdu.j2se.stryzhakov.tasks;
+package ua.edu.sumdu.j2se.stryzhakov.tasks.model;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
 public class ArrayTaskList extends AbstractTaskList implements Cloneable {
-    private Task[] tasks = new Task[10];
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArrayTaskList.class);
+    private final int START_CAPACITY = 10;
+    private Task[] tasks = new Task[START_CAPACITY];
     private int index = 0;
 
     /**
-     * Add new task in the array
+     * Add new task in the array.
      *
      * @param task for add
      * @throws NullPointerException if task equals null
@@ -22,12 +27,13 @@ public class ArrayTaskList extends AbstractTaskList implements Cloneable {
         if (index == tasks.length) {
             tasks = Arrays.copyOf(tasks, tasks.length * 2);
         }
+        LOGGER.info("Add new task");
         tasks[index] = task;
         index++;
     }
 
     /**
-     * Remove specific task and change array size
+     * Remove specific task and change array size.
      *
      * @param task for remove
      * @return if task is not find return false, else - true
@@ -38,9 +44,12 @@ public class ArrayTaskList extends AbstractTaskList implements Cloneable {
         if (task == null) {
             throw new NullPointerException("The task cannot be null");
         }
-        if (tasks.length == 0) return false;
+        if (tasks.length == 0) {
+            return false;
+        }
         for (int i = 0; i < tasks.length; i++) {
             if (tasks[i].equals(task)) {
+                LOGGER.info("Remove task");
                 tasks[i] = null;
                 //Shift the array after removing element
                 Task[] temp = new Task[tasks.length - 1];
@@ -55,19 +64,21 @@ public class ArrayTaskList extends AbstractTaskList implements Cloneable {
     }
 
     /**
-     * Return size of the array without null
+     * Return size of the array without null.
      */
     @Override
     public int size() {
         int count = 0;
         for (Task task : tasks) {
-            if (task != null) count++;
+            if (task != null) {
+                count++;
+            }
         }
         return count;
     }
 
     /**
-     * Get the task with specific index
+     * Get the task with specific index.
      *
      * @param index of the task
      * @return The task with specific index
@@ -78,12 +89,13 @@ public class ArrayTaskList extends AbstractTaskList implements Cloneable {
         if (index < 0 || index >= tasks.length) {
             throw new IndexOutOfBoundsException("Index is out of bounds");
         }
+        LOGGER.info("Get task from list with index " + index);
         return tasks[index];
     }
 
     /**
      * Return type of list which use in the class
-     * for method "incoming" in abstract class
+     * for method "incoming" in abstract class.
      */
     @Override
     public ListTypes.types getType() {
@@ -91,7 +103,7 @@ public class ArrayTaskList extends AbstractTaskList implements Cloneable {
     }
 
     /**
-     * Transform ArrayTaskList to stream
+     * Transform ArrayTaskList to stream.
      *
      * @return Stream of array
      */
@@ -103,19 +115,20 @@ public class ArrayTaskList extends AbstractTaskList implements Cloneable {
 
     @Override
     public Iterator<Task> iterator() {
+        LOGGER.info("Create new iterator");
         return new ArrayTaskListIterator(this);
     }
 
 
     /**
-     * Iterator for ArrayTaskList class
+     * Iterator for ArrayTaskList class.
      */
     static class ArrayTaskListIterator implements Iterator<Task> {
-        ArrayTaskList arrayTaskList;
+        private final ArrayTaskList arrayTaskList;
         Task temp;
         private int count = 0;
 
-        public ArrayTaskListIterator(ArrayTaskList arrayTaskList) {
+        ArrayTaskListIterator(ArrayTaskList arrayTaskList) {
             this.arrayTaskList = arrayTaskList;
         }
 
@@ -132,7 +145,9 @@ public class ArrayTaskList extends AbstractTaskList implements Cloneable {
 
         @Override
         public void remove() throws IllegalStateException {
-            if (temp == null) throw new IllegalStateException("Call remove without next!");
+            if (temp == null) {
+                throw new IllegalStateException("Call remove without next!");
+            }
             arrayTaskList.remove(temp);
             count--;
 
@@ -141,6 +156,7 @@ public class ArrayTaskList extends AbstractTaskList implements Cloneable {
 
     @Override
     public ArrayTaskList clone() throws CloneNotSupportedException {
+        LOGGER.info("Clone list");
         ArrayTaskList list = (ArrayTaskList) super.clone();
         list.tasks = Arrays.copyOf(this.tasks, this.tasks.length);
         return list;
@@ -150,5 +166,10 @@ public class ArrayTaskList extends AbstractTaskList implements Cloneable {
     public int hashCode() {
         return Arrays.hashCode(tasks);
 
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        return super.equals(o);
     }
 }
